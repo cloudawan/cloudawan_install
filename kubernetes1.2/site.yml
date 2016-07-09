@@ -1,0 +1,83 @@
+- hosts: master_node_host
+  roles:
+  - role: master_node
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/master_node/tasks/common.yml
+  
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master_node/tasks/flannel_preconfigure.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/master_node/tasks/flannel_install.yml
+  
+- hosts: master_node_host
+  tasks:
+  - include: roles/master_node/tasks/docker_reconfigure.yml
+  
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master_node/tasks/kubernetes_certificate_generate.yml
+  
+- hosts: master_node_host
+  tasks:
+  - include: roles/master_node/tasks/kubernetes_certificate_copy.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/master_node/tasks/kubernetes_master.yml
+  
+- hosts: master_node_host
+  tasks:
+  - include: roles/master_node/tasks/kubernetes_node.yml
+  
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master_node/tasks/kube_dns.yml
+
+- hosts: glusterfs_host
+  tasks:
+  - include: roles/master_node/tasks/glusterfs_install.yml
+
+- hosts: glusterfs_host
+  tasks:
+  - include: roles/master_node/tasks/glusterfs_join.yml
+  
+- hosts: glusterfs_configuring
+  tasks:
+  - include: roles/master_node/tasks/glusterfs_create_volume.yml
+
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master_node/tasks/glusterfs_default_endpoint.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/master_node/tasks/private_registry_certificate.yml
+  
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master_node/tasks/private_registry_create.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/master_node/tasks/cloudone_image_retrieve.yml
+  
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master_node/tasks/cloudone_create.yml
+  
+- hosts: master_node_host
+  tasks:
+  - include: roles/master_node/tasks/cloudawan_image_retrieve.yml
+  
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master_node/tasks/cloudone_glusterfs_cluster_configure.yml
+  
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master_node/tasks/cloudone_third_party_service_template_import.yml

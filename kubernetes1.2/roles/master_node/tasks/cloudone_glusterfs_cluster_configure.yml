@@ -1,0 +1,5 @@
+- name: Create cloudone glusterfs cluster script
+  template: src=roles/master_node/templates/cloudone_glusterfs_cluster_create.py.j2 dest=/tmp/cloudone_glusterfs_cluster_create.py backup=no force=yes
+
+- name: Run cloudone glusterfs cluster script
+  command: /usr/bin/python /tmp/cloudone_glusterfs_cluster_create.py

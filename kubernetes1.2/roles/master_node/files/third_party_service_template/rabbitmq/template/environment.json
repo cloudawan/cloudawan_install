@@ -1,0 +1,9 @@
+{
+	"NAMESPACE": "default",
+	"SERVICE_NAME": "rabbitmq",
+	"USER_USERNAME": "root",
+	"USER_PASSWORD": "password",
+	"USER_PRIVILEGE_CONFIG": ".*",
+	"USER_PRIVILEGE_WRITE": ".*",
+	"USER_PRIVILEGE_READ": ".*"
+}

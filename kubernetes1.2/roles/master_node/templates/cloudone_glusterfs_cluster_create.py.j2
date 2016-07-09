@@ -1,0 +1,44 @@
+import json
+from httplib2 import Http
+
+
+host_and_port = "{{ inventory_hostname }}:30002"
+
+
+h = Http(disable_ssl_certificate_validation=True)
+
+
+body_dictionary = {
+	"Username": "admin",
+	"Password": "password"
+}
+
+head, body = h.request("https://" + host_and_port + "/api/v1/authorizations/tokens", "POST", json.dumps(body_dictionary), headers={"Content-Type": "application/json"})
+if head.status != 200:
+	print head
+	print body
+	raise Exception("Fail to get token")
+
+token = json.loads(body).get("Token")	
+
+body_dictionary = {
+	"Name": "glusterfs", "HostSlice": [
+{% for ip in groups['glusterfs_host'] %}
+		"{{ ip }}",
+{% endfor %}
+	],
+	"Path": "/data/glusterfs",
+	"SSHDialTimeoutInMilliSecond": 1000,
+	"SSHSessionTimeoutInMilliSecond": 10000,
+	"SSHPort": 22,
+	"SSHUser": "{{ hostvars[groups['glusterfs_host'][0]]["ansible_user"] }}",
+	"SSHPassword": "{{ hostvars[groups['glusterfs_host'][0]]["ansible_ssh_pass"] }}",
+}
+
+head, body = h.request("https://" + host_and_port + "/api/v1/glusterfs/clusters", "POST", json.dumps(body_dictionary), headers={"Content-Type": "application/json", "token": token})
+if head.status != 200:
+	print head
+	print body
+	raise Exception("Fail to post")
+
+print "Done"

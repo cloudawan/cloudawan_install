@@ -1,0 +1,27 @@
+# module requirement
+
+- name: Install docker-py
+  pip: name=docker-py
+  become: yes
+
+# retrieve
+
+- name: Retrieve cloudawan/cloudone
+  docker_image:
+    name: cloudawan/cloudone
+  become: yes
+  
+- name: Retrieve cloudawan/cloudone_gui
+  docker_image:
+    name: cloudawan/cloudone_gui
+  become: yes
+  
+- name: Retrieve cloudawan/cloudone_analysis
+  docker_image:
+    name: cloudawan/cloudone_analysis
+  become: yes
+  
+- name: Retrieve cloudawan/elasticsearch
+  docker_image:
+    name: cloudawan/elasticsearch
+  become: yes

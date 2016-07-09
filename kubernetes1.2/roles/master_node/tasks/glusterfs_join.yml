@@ -1,0 +1,6 @@
+# glusterfs server
+  
+- name: Join cluster
+  command: /usr/sbin/gluster peer probe {{ seed_host }}
+  become: true
+ 

@@ -1,0 +1,2 @@
+ETCD_OPTS=" -name infra{{ hostname }} -initial-advertise-peer-urls http://{{ hostname }}:2380 -listen-peer-urls http://{{ hostname }}:2380 -listen-client-urls http://127.0.0.1:4001,http://{{ hostname }}:4001 -advertise-client-urls http://{{ hostname }}:4001 -initial-cluster-token etcd-cluster-kube-1 -initial-cluster {% for ip in groups['master_node'] %}infra{{ hostvars[ip]['hostname'] }}=http://{{ hostvars[ip]['hostname'] }}:2380,{% endfor %} -initial-cluster-state new"
+

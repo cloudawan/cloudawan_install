@@ -1,0 +1,11 @@
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: etcd
+subsets:
+{% for ip in groups['master_node_host'] %}
+  - addresses:
+      - ip: {{ ip }}
+    ports:
+      - port: 4001
+{% endfor %}

@@ -1,0 +1,1 @@
+KUBELET_OPTS=" --address=0.0.0.0 --port=10250  --hostname-override={{ hostname }}  --api-servers=http://127.0.0.1:8080  --logtostderr=true  --cluster-dns={{ service_cluster_dns_ip }}  --cluster-domain=cluster.local  --housekeeping-interval=1s  --node-labels={{ node_label }}"

@@ -1,0 +1,13 @@
+# create
+
+- name: Copy private-registry-controller-wth-glusterfs.json
+  copy: src=roles/master_node/files/private-registry-controller-wth-glusterfs.json dest=/tmp/private-registry-controller-wth-glusterfs.json
+  
+- name: Copy private-registry-service.json
+  copy: src=roles/master_node/files/private-registry-service.json dest=/tmp/private-registry-service.json
+
+- name: Create private-registry-controller-wth-glusterfs.json
+  command: /usr/local/bin/kubectl create -f /tmp/private-registry-controller-wth-glusterfs.json
+  
+- name: Create private-registry-service.json
+  command: /usr/local/bin/kubectl create -f /tmp/private-registry-service.json

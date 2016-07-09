@@ -1,0 +1,43 @@
+# All Kubernetes Master role and Node role hosts
+[master_node:children]
+master_node_host
+master_node_configuring
+
+[master_node:vars]
+flannel_subnet=172.16.0.0
+flannel_subnet_mask_bit=16
+service_cluster_ip_range=172.17.3.0/24
+service_cluster_dns_ip=172.17.3.10
+node_label="region=region1,zone=zone1"
+
+
+# Install infrastructure
+[master_node_host]
+192.168.0.71 hostname=k8masternodea1 ansible_user=cloudawan ansible_ssh_pass=cloud4win ansible_become_pass=cloud4win
+192.168.0.72 hostname=k8masternodea2 ansible_user=cloudawan ansible_ssh_pass=cloud4win ansible_become_pass=cloud4win
+192.168.0.73 hostname=k8masternodea3 ansible_user=cloudawan ansible_ssh_pass=cloud4win ansible_become_pass=cloud4win
+
+# The machine used to configure software
+[master_node_configuring]
+192.168.0.71 hostname=k8masternodea1 ansible_user=cloudawan ansible_ssh_pass=cloud4win ansible_become_pass=cloud4win
+
+
+
+# For network file system
+[glusterfs:children]
+glusterfs_host
+glusterfs_configuring
+
+[glusterfs:vars]
+seed_host=192.168.0.74
+# software_replica_host are the hosts used to hold the volumes used by system programs. They can be picked up from the glusterfs host list.
+software_replica_host_1=192.168.0.74
+software_replica_host_2=192.168.0.75
+
+[glusterfs_host]
+192.168.0.74 ansible_user=cloudawan ansible_ssh_pass=cloud4win ansible_become_pass=cloud4win
+192.168.0.75 ansible_user=cloudawan ansible_ssh_pass=cloud4win ansible_become_pass=cloud4win
+
+# The machine used to configure
+[glusterfs_configuring]
+192.168.0.74 ansible_user=cloudawan ansible_ssh_pass=cloud4win ansible_become_pass=cloud4win 

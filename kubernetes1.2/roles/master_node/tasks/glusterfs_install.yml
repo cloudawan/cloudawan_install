@@ -1,0 +1,20 @@
+# glusterfs server
+  
+- name: Add glusterfs repository
+  apt_repository: repo='deb http://ppa.launchpad.net/gluster/glusterfs-3.7/ubuntu trusty main' filename=glusterfs.list
+  become: true
+  
+- name: Run apt-get update and install glusterfs server
+  apt: name=glusterfs-server update_cache=yes force=yes
+  become: true
+  
+# directory
+  
+- name: Creates directory
+  file: path=/data state=directory
+  become: true
+
+- name: Creates directory
+  file: path=/data/glusterfs state=directory
+  become: true
+  

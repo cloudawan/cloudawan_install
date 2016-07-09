@@ -1,0 +1,65 @@
+{
+    "apiVersion": "v1",
+    "kind": "ReplicationController",
+    "metadata": {
+        "labels": {
+            "name": "mariadb-galera"
+        },
+        "name": "mariadb-galera"
+    },
+    "spec": {
+        "replicas": 1,
+        "selector": {
+            "name": "mariadb-galera"
+        },
+        "template": {
+            "metadata": {
+                "labels": {
+                    "name": "mariadb-galera"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "cloudawan/mariadb-galera",
+                        "name": "mariadb-galera",
+                        "ports": [
+                            {
+                                "name": "mysql",
+                                "containerPort": 3306
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "NAMESPACE",
+                                "value": "default"
+                            },
+                            {
+                                "name": "SERVICE_NAME",
+                                "value": "mariadb-galera"
+                            },
+                            {
+                                "name": "TERM",
+                                "value": "dumb"
+                            },
+                            {
+                                "name": "ROOT_PASSWORD",
+                                "value": "password"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": 2,
+                                "memory": "4096Mi"
+                            },
+                            "requests": {
+                                "cpu": 0.5,
+                                "memory": "1024Mi"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,6 @@
+- name: Copy script reconfDocker.sh
+  copy: src=roles/master_node/files/script/reconfDocker.sh dest=/home/{{ansible_user}}/reconfDocker.sh mode=0755
+
+- name: Run script to reconfigure docker
+  shell: /home/{{ansible_user}}/reconfDocker.sh i
+  become: true

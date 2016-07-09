@@ -1,0 +1,102 @@
+import json
+from httplib2 import Http
+
+
+host_and_port = "{{ inventory_hostname }}:30002"
+
+
+h = Http(disable_ssl_certificate_validation=True)
+
+
+body_dictionary = {
+	"Username": "admin",
+	"Password": "password"
+}
+
+head, body = h.request("https://" + host_and_port + "/api/v1/authorizations/tokens", "POST", json.dumps(body_dictionary), headers={"Content-Type": "application/json"})
+if head.status != 200:
+	print head
+	print body
+	raise Exception("Fail to get token")
+
+token = json.loads(body).get("Token")
+
+
+def import_template(name, description, replication_controller_file_name, service_file_name, environment_file_name, script_file_name):
+	with open(replication_controller_file_name, "r") as file_read:
+		replication_controller = file_read.read()
+	with open(service_file_name, "r") as file_read:
+		service = file_read.read()
+	with open(environment_file_name, "r") as file_read:
+		environment = file_read.read()
+		environment = json.loads(environment)
+	with open(script_file_name, "r") as file_read:
+		script = file_read.read()
+	
+	body_dictionary = {
+		"Name": name,
+		"Description": description,
+		"ReplicationControllerJson": replication_controller,
+		"ServiceJson": service,
+		"Environment": environment,
+		"ScriptType": "python",
+		"ScriptContent": script
+	}
+
+	head, body = h.request("https://" + host_and_port + "/api/v1/clusterapplications", "POST", json.dumps(body_dictionary), headers={"Content-Type": "application/json", "token": token})
+	if head.status != 200:
+		print head
+		print body
+		raise Exception("Fail to post")
+
+		
+import_template(
+	"cassandra", 
+	"cassandra cluster. Size: 1, 3, or ...",
+	"/tmp/third_party_service_template/cassandra/template/replication-controller.json",
+	"/tmp/third_party_service_template/cassandra/template/service.json",
+	"/tmp/third_party_service_template/cassandra/template/environment.json",
+	"/tmp/third_party_service_template/cassandra/template/cluster.py")
+
+import_template(
+	"cassandra-with-glusterfs", 
+	"cassandra cluster using glusterfs as storage. Size: 1, 3, or ...",
+	"/tmp/third_party_service_template/cassandra/template_with_glusterfs/replication-controller.json",
+	"/tmp/third_party_service_template/cassandra/template_with_glusterfs/service.json",
+	"/tmp/third_party_service_template/cassandra/template_with_glusterfs/environment.json",
+	"/tmp/third_party_service_template/cassandra/template_with_glusterfs/cluster.py")
+
+import_template(
+	"elasticsearch", 
+	"elasticsearch cluster using glusterfs as storage. Size: 1, 3, or ...",
+	"/tmp/third_party_service_template/elasticsearch/template_with_glusterfs/replication-controller.json",
+	"/tmp/third_party_service_template/elasticsearch/template_with_glusterfs/service.json",
+	"/tmp/third_party_service_template/elasticsearch/template_with_glusterfs/environment.json",
+	"/tmp/third_party_service_template/elasticsearch/template_with_glusterfs/cluster.py")
+
+import_template(
+	"mariadb-galera", 
+	"mariadb-galera cluster. Size: 1, 3, or ... 2 could work but may encounter split-brain",
+	"/tmp/third_party_service_template/mariadb_galera/template/replication-controller.json",
+	"/tmp/third_party_service_template/mariadb_galera/template/service.json",
+	"/tmp/third_party_service_template/mariadb_galera/template/environment.json",
+	"/tmp/third_party_service_template/mariadb_galera/template/cluster.py")
+
+import_template(
+	"mariadb-galera-with-glusterfs", 
+	"mariadb-galera cluster using glusterfs as storage. Size: 1, 3, or ... 2 could work but may encounter split-brain",
+	"/tmp/third_party_service_template/mariadb_galera/template_with_glusterfs/replication-controller.json",
+	"/tmp/third_party_service_template/mariadb_galera/template_with_glusterfs/service.json",
+	"/tmp/third_party_service_template/mariadb_galera/template_with_glusterfs/environment.json",
+	"/tmp/third_party_service_template/mariadb_galera/template_with_glusterfs/cluster.py")
+
+import_template(
+	"rabbitmq", 
+	"rabbitmq cluster. Size: 1, 3, or ...",
+	"/tmp/third_party_service_template/rabbitmq/template/replication-controller.json",
+	"/tmp/third_party_service_template/rabbitmq/template/service.json",
+	"/tmp/third_party_service_template/rabbitmq/template/environment.json",
+	"/tmp/third_party_service_template/rabbitmq/template/cluster.py")
+
+	
+print "Done"

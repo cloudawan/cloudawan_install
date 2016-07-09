@@ -1,0 +1,265 @@
+{
+    "kind": "ReplicationController",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "cloudone-all",
+        "labels": {
+            "name": "cloudone-all"
+        }
+    },
+    "spec": {
+        "replicas": 1,
+        "selector": {
+            "name": "cloudone-all"
+        },
+        "template": {
+            "metadata": {
+                "labels": {
+                    "name": "cloudone-all"
+                }
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "docker",
+                        "hostPath": {
+                            "path": "/var/run/docker.sock"
+                        }
+                    },
+                    {
+                        "name": "localtime",
+                        "hostPath": {
+                            "path": "/etc/localtime"
+                        }
+                    },
+                    {
+                        "name": "elasticsearch-volume",
+                        "glusterfs": {
+                            "endpoints": "glusterfs",
+                            "path": "cloudone_elasticsearch_volume",
+                            "readOnly": false
+                        }
+                    },
+                    {
+                        "name": "hosts",
+                        "hostPath": {
+                            "path": "/etc/hosts"
+                        }
+                    },
+                    {
+                        "name": "shared-volume",
+                        "emptyDir": {
+                            "medium": ""
+                        }
+                    },
+                    {
+                        "name": "cloudone-gui-configuration-volume",
+                        "glusterfs": {
+                            "endpoints": "glusterfs",
+                            "path": "cloudone_gui_configuration_volume",
+                            "readOnly": false
+                        }
+                    }
+                ],
+                "containers": [
+                    {
+                        "name": "cloudone",
+                        "image": "cloudawan/cloudone",
+                        "ports": [
+                            {
+                                "name": "https-server", 
+                                "containerPort": 8081
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "ETCD_ENDPOINTS",
+                                "value": "\"http://etcd.default.svc.cluster.local:4001\""
+                            },
+                            {
+                                "name": "KUBE_APISERVER_ENDPOINTS",
+                                "value": "\"https://kubernetes.default.svc.cluster.local:443\""
+                            },
+                            {
+                                "name": "CLOUDONE_ANALYSIS_HOST",
+                                "value": "127.0.0.1"
+                            },
+                            {
+                                "name": "CLOUDONE_ANALYSIS_PORT",
+                                "value": "8082"
+                            }
+                        ],
+                        "volumeMounts": [
+                            {
+                                "name": "docker",
+                                "readOnly": true,
+                                "mountPath": "/var/run/docker.sock"
+                            },
+                            {
+                                "name": "localtime",
+                                "readOnly": true,
+                                "mountPath": "/etc/localtime"
+                            },
+                            {
+                                "name": "hosts",
+                                "readOnly": true,
+                                "mountPath": "/etc/hosts"
+                            },
+                            {
+                                "name": "shared-volume",
+                                "readOnly": false,
+                                "mountPath": "/tmp"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": 2,
+                                "memory": "4096Mi"
+                            },
+                            "requests": {
+                                "cpu": 0.2,
+                                "memory": "512Mi"
+                            }
+                        }
+                    },
+                    {
+                        "name": "cloudone-gui",
+                        "image": "cloudawan/cloudone_gui",
+                        "ports": [
+                            {
+                                "name": "https-server", 
+                                "containerPort": 8443
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "CLOUDONE_HOST",
+                                "value": "127.0.0.1"
+                            },
+                            {
+                                "name": "CLOUDONE_PORT",
+                                "value": "8081"
+                            },
+                            {
+                                "name": "CLOUDONE_ANALYSIS_HOST",
+                                "value": "127.0.0.1"
+                            },
+                            {
+                                "name": "CLOUDONE_ANALYSIS_PORT",
+                                "value": "8082"
+                            }
+                        ],
+                        "volumeMounts": [
+                            {
+                                "name": "localtime",
+                                "readOnly": true,
+                                "mountPath": "/etc/localtime"
+                            },
+                            {
+                                "name": "shared-volume",
+                                "readOnly": false,
+                                "mountPath": "/tmp"
+                            },
+                            {
+                                "name": "cloudone-gui-configuration-volume",
+                                "readOnly": false,
+                                "mountPath": "/etc/cloudone_gui"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": 2,
+                                "memory": "4096Mi"
+                            },
+                            "requests": {
+                                "cpu": 0.2,
+                                "memory": "512Mi"
+                            }
+                        }
+                    },
+                    {
+                        "name": "cloudone-analysis",
+                        "image": "cloudawan/cloudone_analysis",
+                        "ports": [
+                            {
+                                "name": "https-server", 
+                                "containerPort": 8082
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "KUBE_APISERVER_ENDPOINTS",
+                                "value": "\"https://kubernetes.default.svc.cluster.local:443\""
+                            },
+                            {
+                                "name": "ELASTICSEARCH_CLUSTER_HOST",
+                                "value": "\"127.0.0.1\""
+                            },
+                            {
+                                "name": "ELASTICSEARCH_CLUSTER_PORT",
+                                "value": "9200"
+                            },
+                            {
+                                "name": "CLOUDONE_HOST",
+                                "value": "127.0.0.1"
+                            },
+                            {
+                                "name": "CLOUDONE_PORT",
+                                "value": "8081"
+                            }
+                        ],
+                        "volumeMounts": [
+                            {
+                                "name": "localtime",
+                                "readOnly": true,
+                                "mountPath": "/etc/localtime"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": 2,
+                                "memory": "4096Mi"
+                            },
+                            "requests": {
+                                "cpu": 0.2,
+                                "memory": "512Mi"
+                            }
+                        }
+                    },
+                    {
+                        "image": "cloudawan/elasticsearch",
+                        "name": "elasticsearch",
+                        "ports": [
+                            {
+                                "name": "rest",
+                                "containerPort": 9200
+                            }
+                        ],
+                        "volumeMounts": [
+                            {
+                                "name": "elasticsearch-volume",
+                                "readOnly": false,
+                                "mountPath": "/usr/share/elasticsearch/data"
+                            },
+                            {
+                                "name": "localtime",
+                                "readOnly": true,
+                                "mountPath": "/etc/localtime"
+                            }
+                        ],
+                        "resources": {
+                            "limits": {
+                                "cpu": 2,
+                                "memory": "4096Mi"
+                            },
+                            "requests": {
+                                "cpu": 0.2,
+                                "memory": "512Mi"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,7 @@
+{
+	"NAMESPACE": "default",
+	"SERVICE_NAME": "mariadb-galera",
+	"TERM": "xterm",
+	"ROOT_PASSWORD": "password",
+	"XTRABACKUP_PASSWORD": "password"
+}
