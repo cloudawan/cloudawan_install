@@ -13,7 +13,7 @@ vrrp_instance 50 {
   state MASTER
   interface eth0
   virtual_ipaddress {
-    {{ haproxy_virtual_ip_for_kubernetes_master_node_host }} dev eth0
+    {{ haproxy_floating_ip }} dev eth0
   }
   track_script {
     haproxy

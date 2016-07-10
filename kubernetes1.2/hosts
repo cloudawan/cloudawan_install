@@ -49,7 +49,7 @@ software_replica_host_2=192.168.0.75
 haproxy_host
 
 [haproxy:vars]
-haproxy_virtual_ip_for_kubernetes_master_node_host=192.168.0.150
+haproxy_floating_ip=192.168.0.150
 
 [haproxy_host]
 192.168.0.74 ansible_user=username ansible_ssh_pass=password ansible_become_pass=password
