@@ -1,7 +1,7 @@
 # glusterfs server
   
 - name: Add glusterfs repository
-  apt_repository: repo='deb http://ppa.launchpad.net/gluster/glusterfs-3.7/ubuntu trusty main' filename=glusterfs.list
+  apt_repository: repo='deb http://ppa.launchpad.net/gluster/glusterfs-3.7/ubuntu trusty main' filename=glusterfs
   become: true
   
 - name: Run apt-get update and install glusterfs server

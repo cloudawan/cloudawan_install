@@ -10,7 +10,6 @@ service_cluster_ip_range=172.17.3.0/24
 service_cluster_dns_ip=172.17.3.10
 node_label="region=region1,zone=zone1"
 
-
 # Install infrastructure
 [master_node_host]
 192.168.0.71 hostname=k8masternodea1 ansible_user=username ansible_ssh_pass=password ansible_become_pass=password
@@ -23,12 +22,13 @@ node_label="region=region1,zone=zone1"
 
 
 
-# For network file system
+# Network file system 
 [glusterfs:children]
 glusterfs_host
 glusterfs_configuring
 
 [glusterfs:vars]
+# Glusterfs
 seed_host=192.168.0.74
 # software_replica_host are the hosts used to hold the volumes used by system programs. They can be picked up from the glusterfs host list.
 software_replica_host_1=192.168.0.74
@@ -41,3 +41,16 @@ software_replica_host_2=192.168.0.75
 # The machine used to configure
 [glusterfs_configuring]
 192.168.0.74 ansible_user=username ansible_ssh_pass=password ansible_become_pass=password 
+
+
+
+# HAproxy
+[haproxy:children]
+haproxy_host
+
+[haproxy:vars]
+haproxy_virtual_ip_for_kubernetes_master_node_host=192.168.0.150
+
+[haproxy_host]
+192.168.0.74 ansible_user=username ansible_ssh_pass=password ansible_become_pass=password
+192.168.0.75 ansible_user=username ansible_ssh_pass=password ansible_become_pass=password

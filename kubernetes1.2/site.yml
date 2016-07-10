@@ -85,3 +85,7 @@
 - hosts: master_node_configuring
   tasks:
   - include: roles/master_node/tasks/cloudone_third_party_service_template_import.yml
+  
+- hosts: haproxy_host
+  tasks:
+  - include: roles/master_node/tasks/haproxy_install.yml
