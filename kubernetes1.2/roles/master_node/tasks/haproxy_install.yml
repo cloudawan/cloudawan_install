@@ -25,6 +25,10 @@
   lineinfile: dest=/etc/default/haproxy line="ENABLED=1"
   become: true
   
+- name: Modify /etc/default/haproxy
+  lineinfile: dest=/etc/default/haproxy line="ENABLED=0" state=absent
+  become: true
+  
 - name: Run keepalived 
   service: name=keepalived state=restarted
   become: true
