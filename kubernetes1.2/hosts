@@ -49,6 +49,7 @@ software_replica_host_2=192.168.0.75
 haproxy_host
 
 [haproxy:vars]
+# This floating ip is in the hot-standby mode. If the active HAProxy server is down, the other will take over.
 haproxy_floating_ip=192.168.0.150
 
 [haproxy_host]
