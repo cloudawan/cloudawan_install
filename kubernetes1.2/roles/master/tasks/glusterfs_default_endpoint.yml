@@ -1,0 +1,23 @@
+# Create temporarily templates
+
+- name: Copy glusterfs-service.json
+  copy: src=roles/master/files/glusterfs-service.json dest=/tmp/glusterfs-service.json
+
+- name: Create glusterfs-endpoints.yaml.j2
+  template: src=roles/master/templates/glusterfs-endpoints.yaml.j2 dest=/tmp/glusterfs-endpoints.yaml backup=no force=yes
+
+# Run templates
+
+- name: Create glusterfs-service.json
+  command: /usr/local/bin/kubectl create -f /tmp/glusterfs-service.json
+
+- name: Create glusterfs-endpoints.yaml
+  command: /usr/local/bin/kubectl create -f /tmp/glusterfs-endpoints.yaml
+
+# Delete temporarily templates
+
+- name: Delete glusterfs-service.json
+  file: path=/tmp/glusterfs-service.json state=absent
+  
+- name: Delete glusterfs-endpoints.yaml
+  file: path=/tmp/glusterfs-endpoints.yaml state=absent

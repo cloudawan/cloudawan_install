@@ -1,0 +1,17 @@
+# Create python program cloudone_node_health
+
+- name: Creates directory
+  file: path=/srv/cloudone_node_health state=directory
+  become: true
+
+- name: Copy /srv/cloudone_node_health/cloudone_node_health.py
+  copy: src=roles/shared/files/srv/cloudone_node_health/cloudone_node_health.py dest=/srv/cloudone_node_health/cloudone_node_health.py
+  become: true
+  
+- name: Copy /etc/init/cloudone_node_health.conf
+  copy: src=roles/shared/files/etc/init/cloudone_node_health.conf dest=/etc/init/cloudone_node_health.conf
+  become: true
+  
+- name: Run cloudone_node_health
+  service: name=cloudone_node_health state=started
+  become: true

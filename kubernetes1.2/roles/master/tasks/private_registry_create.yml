@@ -1,0 +1,23 @@
+# Create temporarily templates
+
+- name: Copy private-registry-controller-wth-glusterfs.json
+  copy: src=roles/master/files/private-registry-controller-wth-glusterfs.json dest=/tmp/private-registry-controller-wth-glusterfs.json
+  
+- name: Copy private-registry-service.json
+  copy: src=roles/master/files/private-registry-service.json dest=/tmp/private-registry-service.json
+
+# Run templates
+
+- name: Create private-registry-controller-wth-glusterfs.json
+  command: /usr/local/bin/kubectl create -f /tmp/private-registry-controller-wth-glusterfs.json
+  
+- name: Create private-registry-service.json
+  command: /usr/local/bin/kubectl create -f /tmp/private-registry-service.json
+
+# Delete temporarily templates
+
+- name: Delete private-registry-controller-wth-glusterfs.json
+  file: path=/tmp/private-registry-controller-wth-glusterfs.json state=absent
+  
+- name: Delete private-registry-service.json
+  file: path=/tmp/private-registry-service.json state=absent

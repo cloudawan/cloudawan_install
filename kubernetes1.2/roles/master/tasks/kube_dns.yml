@@ -1,0 +1,26 @@
+# Create temporarily templates
+
+- name: Copy skydns-rc.yaml
+  copy: src=roles/master/files/skydns-rc.yaml dest=/tmp/skydns-rc.yaml
+
+- name: Create the skydns-svc.yaml
+  template: src=roles/master/templates/skydns-svc.yaml.j2 dest=/tmp/skydns-svc.yaml backup=no force=yes
+
+# Run templates
+
+- name: Create namespace kube-system
+  command: /usr/local/bin/kubectl create namespace kube-system
+
+- name: Create skydns-rc
+  command: /usr/local/bin/kubectl create -f /tmp/skydns-rc.yaml
+
+- name: Create skydns-svc
+  command: /usr/local/bin/kubectl create -f /tmp/skydns-svc.yaml
+
+# Delete temporarily templates
+
+- name: Delete skydns-rc.yaml
+  file: path=/tmp/skydns-rc.yaml state=absent
+  
+- name: Delete skydns-svc.yaml
+  file: path=/tmp/skydns-svc.yaml state=absent

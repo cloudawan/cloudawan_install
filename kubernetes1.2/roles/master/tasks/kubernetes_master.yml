@@ -1,0 +1,81 @@
+# Install kube-apiserver
+
+- name: Copy /opt/bin/kube-apiserver
+  copy: src=roles/master/files/opt/bin/kube-apiserver dest=/opt/bin/kube-apiserver mode=0755
+  become: true
+  
+- name: Copy /etc/init.d/kube-apiserver
+  copy: src=roles/master/files/etc/init.d/kube-apiserver dest=/etc/init.d/kube-apiserver
+  become: true
+  
+- name: Copy /etc/init/kube-apiserver.conf
+  copy: src=roles/master/files/etc/init/kube-apiserver.conf dest=/etc/init/kube-apiserver.conf
+  become: true
+  
+- name: Create the /etc/default/kube-apiserver file for all machines
+  template: src=roles/master/templates/etc/default/kube-apiserver.j2 dest=/etc/default/kube-apiserver backup=no force=yes
+  become: true
+
+- name: Run kube-apiserver
+  service: name=kube-apiserver state=started
+  become: true
+  
+# Install kube-controller-manager
+
+- name: Copy /etc/default/kube-controller-manager
+  copy: src=roles/master/files/etc/default/kube-controller-manager dest=/etc/default/kube-controller-manager
+  become: true
+  
+- name: Copy /etc/init.d/kube-controller-manager
+  copy: src=roles/master/files/etc/init.d/kube-controller-manager dest=/etc/init.d/kube-controller-manager
+  become: true
+  
+- name: Copy /opt/bin/kube-controller-manager
+  copy: src=roles/master/files/opt/bin/kube-controller-manager dest=/opt/bin/kube-controller-manager mode=0755
+  become: true
+  
+- name: Copy /etc/init/kube-controller-manager.conf
+  copy: src=roles/master/files/etc/init/kube-controller-manager.conf dest=/etc/init/kube-controller-manager.conf
+  become: true
+  
+# Install kube-scheduler
+
+- name: Copy /etc/default/kube-scheduler
+  copy: src=roles/master/files/etc/default/kube-scheduler dest=/etc/default/kube-scheduler
+  become: true
+  
+- name: Copy /etc/init.d/kube-scheduler
+  copy: src=roles/master/files/etc/init.d/kube-scheduler dest=/etc/init.d/kube-scheduler
+  become: true
+  
+- name: Copy /opt/bin/kube-scheduler
+  copy: src=roles/master/files/opt/bin/kube-scheduler dest=/opt/bin/kube-scheduler mode=0755
+  become: true
+  
+- name: Copy /etc/init/kube-scheduler.conf
+  copy: src=roles/master/files/etc/init/kube-scheduler.conf dest=/etc/init/kube-scheduler.conf
+  become: true
+  
+# Install kubectl
+
+- name: Copy /usr/local/bin/kubectl
+  copy: src=roles/master/files/usr/local/bin/kubectl dest=/usr/local/bin/kubectl mode=0755
+  become: true
+  
+# Install kube-coordinator
+
+- name: Creates directory
+  file: path=/srv/kube-coordinator state=directory
+  become: true
+
+- name: Copy /srv/kube-coordinator/kube-coordinator.py
+  copy: src=roles/master/files/srv/kube-coordinator/kube-coordinator.py dest=/srv/kube-coordinator/kube-coordinator.py
+  become: true
+  
+- name: Copy /etc/init/kube-coordinator.conf
+  copy: src=roles/master/files/etc/init/kube-coordinator.conf dest=/etc/init/kube-coordinator.conf
+  become: true
+  
+- name: Run kube-coordinator
+  service: name=kube-coordinator state=started
+  become: true

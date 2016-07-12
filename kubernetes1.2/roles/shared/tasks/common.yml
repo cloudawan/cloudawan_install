@@ -1,0 +1,53 @@
+# Update apt-get with retry
+# The apt-get module is easily broken for many reasons so doing this at the beginning
+
+- name: Update apt-get 
+  apt: update_cache=yes cache_valid_time=3600
+  become: yes
+  register: apt_get_update_result
+  until: apt_get_update_result|success
+  retries: 3
+  delay: 5
+  ignore_errors: yes
+
+- name: Retry if needed using command apt-get update
+  command: apt-get update
+  become: yes
+  when: apt_get_update_result|failed
+
+# NTP server
+  
+- name: Run apt-get to install ntp
+  apt: name=ntp
+  become: true
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
+  
+- name: Run ntp
+  service: name=ntp state=started
+  become: true
+
+# Python pip
+
+- name: Run apt-get to install ntp
+  apt: name=python-pip
+  become: true
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
+
+- name: Install httplib2
+  pip: name=httplib2
+  become: yes
+  
+# Program directory
+  
+- name: Creates directory to run programs
+  file: path=/opt/bin state=directory
+  become: true
+
+
+

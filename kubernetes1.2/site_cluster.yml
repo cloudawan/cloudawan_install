@@ -1,0 +1,125 @@
+# Shared
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/shared/tasks/common.yml
+
+# Master
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/master/tasks/hosts.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/master/tasks/etcd_install.yml
+
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master/tasks/flannel_preconfigure.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/shared/tasks/flannel_install.yml
+
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master/tasks/kubernetes_certificate_generate.yml
+  
+- hosts: master_node_host
+  tasks:
+  - include: roles/master/tasks/kubernetes_certificate_copy.yml
+
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master/tasks/kubernetes_certificate_delete_generated_source.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/master/tasks/kubernetes_master.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/shared/tasks/cloudone_node_health.yml
+
+# Node
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/docker_install.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/docker_reconfigure.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/kubernetes_node.yml
+
+# Glusterfs server
+
+- hosts: glusterfs_host
+  tasks:
+  - include: roles/glusterfs/tasks/glusterfs_install.yml
+
+- hosts: glusterfs_host
+  tasks:
+  - include: roles/glusterfs/tasks/glusterfs_join.yml
+  
+- hosts: glusterfs_configuring
+  tasks:
+  - include: roles/glusterfs/tasks/glusterfs_create_volume.yml
+
+# Service/Application on the Kubernetes
+
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master/tasks/kube_dns.yml
+
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master/tasks/glusterfs_default_endpoint.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/private_registry_certificate.yml
+
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master/tasks/private_registry_create.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/cloudone_image_retrieve.yml
+
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master/tasks/cloudone_create.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/cloudawan_image_retrieve.yml
+
+# Configure on cloudone
+
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master/tasks/cloudone_glusterfs_cluster_configure.yml
+
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master/tasks/cloudone_private_registry_configure.yml
+
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master/tasks/cloudone_host_credential_configure.yml
+
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master/tasks/cloudone_third_party_service_template_import.yml
+
+# HAproxy
+
+- hosts: haproxy_host
+  tasks:
+  - include: roles/haproxy/tasks/haproxy_install.yml

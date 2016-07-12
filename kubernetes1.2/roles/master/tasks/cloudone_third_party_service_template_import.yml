@@ -1,0 +1,20 @@
+# Create temporarily templates
+
+- name: Copy third party service template
+  copy: src=roles/master/files/third_party_service_template/ dest=/tmp/third_party_service_template/
+
+- name: Create cloudone third party service template import script
+  template: src=roles/master/templates/cloudone_third_party_service_template_import.py.j2 dest=/tmp/cloudone_third_party_service_template_import.py backup=no force=yes
+
+# Run templates
+
+- name: Run cloudone third party service template import script
+  command: /usr/bin/python /tmp/cloudone_third_party_service_template_import.py
+  
+# Delete temporarily templates
+
+- name: Delete /third_party_service_template
+  file: path=/tmp/third_party_service_template state=absent
+  
+- name: Delete cloudone_third_party_service_template_import.py
+  file: path=/tmp/cloudone_third_party_service_template_import.py state=absent

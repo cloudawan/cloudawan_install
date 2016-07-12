@@ -1,0 +1,17 @@
+# Retrieve
+
+- name: Retrieve cloudawan/cassandra
+  docker_image:
+    name: cloudawan/cassandra
+  become: yes
+  
+- name: Retrieve cloudawan/mariadb-galera
+  docker_image:
+    name: cloudawan/mariadb-galera
+  become: yes
+  
+- name: Retrieve cloudawan/rabbitmq
+  docker_image:
+    name: cloudawan/rabbitmq
+  become: yes
+  

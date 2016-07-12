@@ -1,0 +1,74 @@
+# Install docker
+
+- name: Copy /etc/default/docker
+  copy: src=roles/node/files/etc/default/docker dest=/etc/default/docker
+  become: true
+  
+- name: Copy /etc/init/docker.conf
+  copy: src=roles/node/files/etc/init/docker.conf dest=/etc/init/docker.conf
+  become: true
+  
+- name: Restart docker
+  service: name=docker state=restarted
+  become: true
+
+# Install kubelet
+
+- name: Copy /etc/init/kubelet.conf
+  copy: src=roles/node/files/etc/init/kubelet.conf dest=/etc/init/kubelet.conf
+  become: true
+  
+- name: Copy /etc/init.d/kubelet
+  copy: src=roles/node/files/etc/init.d/kubelet dest=/etc/init.d/kubelet
+  become: true
+  
+- name: Copy /opt/bin/kubelet
+  copy: src=roles/node/files/opt/bin/kubelet dest=/opt/bin/kubelet mode=0755
+  become: true
+  
+- name: Create the /etc/default/kubelet file for all machines
+  template: src=roles/node/templates/etc/default/kubelet.j2 dest=/etc/default/kubelet backup=no force=yes
+  become: true
+  
+- name: Run kubelet
+  service: name=kubelet state=started
+  become: true
+  
+# Install kube-proxy
+
+- name: Copy /etc/default/kube-proxy
+  copy: src=roles/node/files/etc/default/kube-proxy dest=/etc/default/kube-proxy
+  become: true
+  
+- name: Copy /etc/init/kube-proxy.conf
+  copy: src=roles/node/files/etc/init/kube-proxy.conf dest=/etc/init/kube-proxy.conf
+  become: true
+  
+- name: Copy /opt/bin/kube-proxy
+  copy: src=roles/node/files/opt/bin/kube-proxy dest=/opt/bin/kube-proxy mode=0755
+  become: true
+
+- name: Copy /etc/init.d/kube-proxy
+  copy: src=roles/node/files/etc/init.d/kube-proxy dest=/etc/init.d/kube-proxy
+  become: true
+
+- name: Run kubelet
+  service: name=kube-proxy state=started
+  become: true
+
+# Install Glusterfs client
+  
+- name: Add glusterfs repository
+  apt_repository: repo='deb http://ppa.launchpad.net/gluster/glusterfs-3.7/ubuntu trusty main' filename=glusterfs.list
+  become: true
+  
+- name: Run apt-get update and install glusterfs client
+  apt: name=glusterfs-client update_cache=yes force=yes
+  become: true
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
+
+
+  

@@ -1,0 +1,7 @@
+# Configure flannel
+
+- name: Put data to etcd in order to configure flannel
+  uri:
+    url: http://127.0.0.1:4001/v2/keys/coreos.com/network/config?value=%7B%22Network%22%3A+%22{{ flannel_subnet }}%2F{{ flannel_subnet_mask_bit }}%22%2C+%22Backend%22%3A+%7B%22Type%22%3A+%22vxlan%22%7D%7D
+    method: PUT
+    status_code: 200,201

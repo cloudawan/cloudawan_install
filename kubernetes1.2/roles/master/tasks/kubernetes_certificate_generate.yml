@@ -1,0 +1,8 @@
+# certificates
+- name: Change permission
+  command: /bin/chmod a+x roles/master/files/script/make-ca-cert.sh
+  delegate_to: 127.0.0.1
+
+- name: Run script to generate certificates
+  shell: roles/master/files/script/make-ca-cert.sh 127.0.1.1 {{ service_cluster_ip_range }}
+  delegate_to: 127.0.0.1

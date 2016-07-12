@@ -1,0 +1,41 @@
+# Create temporarily templates
+
+- name: Copy etcd-service.json
+  copy: src=roles/master/files/etcd-service.json dest=/tmp/etcd-service.json
+
+- name: Copy cloudone-controller-glusterfs.json
+  copy: src=roles/master/files/cloudone-controller-glusterfs.json dest=/tmp/cloudone-controller-glusterfs.json
+
+- name: Copy cloudone-service.json
+  copy: src=roles/master/files/cloudone-service.json dest=/tmp/cloudone-service.json
+
+- name: Create etcd-endpoints.yaml
+  template: src=roles/master/templates/etcd-endpoints.yaml.j2 dest=/tmp/etcd-endpoints.yaml backup=no force=yes
+
+# Run templates
+
+- name: Create etcd-service.json
+  command: /usr/local/bin/kubectl create -f /tmp/etcd-service.json
+  
+- name: Create etcd-endpoints.yaml
+  command: /usr/local/bin/kubectl create -f /tmp/etcd-endpoints.yaml
+
+- name: Create cloudone-controller-glusterfs.json
+  command: /usr/local/bin/kubectl create -f /tmp/cloudone-controller-glusterfs.json
+
+- name: Create cloudone-service.json
+  command: /usr/local/bin/kubectl create -f /tmp/cloudone-service.json
+  
+# Delete temporarily templates
+
+- name: Delete etcd-service.json
+  file: path=/tmp/etcd-service.json state=absent
+  
+- name: Delete etcd-endpoints.yaml
+  file: path=/tmp/etcd-endpoints.yaml state=absent
+
+- name: Delete cloudone-controller-glusterfs.json
+  file: path=/tmp/cloudone-controller-glusterfs.json state=absent
+
+- name: Delete cloudone-service.json
+  file: path=/tmp/cloudone-service.json state=absent

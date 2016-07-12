@@ -1,8 +1,0 @@
-- name: Copy third party service template
-  copy: src=roles/master_node/files/third_party_service_template/ dest=/tmp/third_party_service_template/
-
-- name: Create cloudone third party service template import script
-  template: src=roles/master_node/templates/cloudone_third_party_service_template_import.py.j2 dest=/tmp/cloudone_third_party_service_template_import.py backup=no force=yes
-
-- name: Run cloudone third party service template import script
-  command: /usr/bin/python /tmp/cloudone_third_party_service_template_import.py
