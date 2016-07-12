@@ -7,7 +7,7 @@
 # linux bridge
   
 - name: Install linux bridge
-  apt: name=bridge-utils
+  apt: name=bridge-utils update_cache=yes
   become: true
 
 # docker

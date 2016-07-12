@@ -81,7 +81,11 @@
 - hosts: master_node_configuring
   tasks:
   - include: roles/master_node/tasks/cloudone_private_registry_configure.yml
-  
+
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master_node/tasks/cloudone_host_credential_configure.yml
+
 - hosts: master_node_configuring
   tasks:
   - include: roles/master_node/tasks/cloudone_third_party_service_template_import.yml
