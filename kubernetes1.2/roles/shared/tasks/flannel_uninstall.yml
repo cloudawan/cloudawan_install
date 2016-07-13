@@ -1,0 +1,25 @@
+# Uninstall flannel
+
+- name: Stop flanneld
+  service: name=flanneld state=stopped
+  become: true
+  ignore_errors: yes
+
+- name: Delete /opt/bin/flanneld
+  file: path=/opt/bin/flanneld state=absent
+  become: true
+  
+- name: Delete /etc/init.d/flanneld
+  file: path=/etc/init.d/flanneld state=absent
+  become: true
+
+- name: Delete /etc/init/flanneld.conf
+  file: path=/etc/init/flanneld.conf state=absent
+  become: true
+  
+- name: Delete /etc/default/flanneld
+  file: path=/etc/default/flanneld state=absent
+  become: true
+
+
+  

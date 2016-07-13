@@ -1,0 +1,26 @@
+# Uninstall HAProxy and keepalived
+
+- name: Stop keepalived 
+  service: name=keepalived state=stopped
+  become: true
+  ignore_errors: yes
+  
+- name: Stop haproxy
+  service: name=haproxy state=stopped
+  become: true
+  ignore_errors: yes
+
+- name: Uninstall keepalived
+  apt: name=keepalived state=absent purge=yes
+  become: true
+  
+- name: Uninstall haproxy
+  apt: name=haproxy state=absent purge=yes
+  become: true
+  
+- name: Modify /etc/sysctl.conf
+  lineinfile: dest=/etc/sysctl.conf line="net.ipv4.ip_nonlocal_bind=1" state=absent
+  become: true
+  
+- name: Reset sysctl
+  command: /sbin/sysctl -p

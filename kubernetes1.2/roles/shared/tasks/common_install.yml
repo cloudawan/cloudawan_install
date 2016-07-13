@@ -15,7 +15,7 @@
   become: yes
   when: apt_get_update_result|failed
 
-# NTP server
+# Install NTP server
   
 - name: Run apt-get to install ntp
   apt: name=ntp
@@ -29,7 +29,7 @@
   service: name=ntp state=started
   become: true
 
-# Python pip
+# Install python pip
 
 - name: Run apt-get to install ntp
   apt: name=python-pip
@@ -43,11 +43,8 @@
   pip: name=httplib2
   become: yes
   
-# Program directory
+# Create directory /opt/bin 
   
 - name: Creates directory to run programs
   file: path=/opt/bin state=directory
   become: true
-
-
-

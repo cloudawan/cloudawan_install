@@ -1,0 +1,59 @@
+# Uninstall kubelet
+
+- name: Stop kubelet
+  service: name=kubelet state=stopped
+  become: true
+  ignore_errors: yes
+
+- name: Delete /etc/init/kubelet.conf
+  file: path=/etc/init/kubelet.conf state=absent
+  become: true
+  
+- name: Delete /etc/init.d/kubelet
+  file: path=/etc/init.d/kubelet state=absent
+  become: true
+  
+- name: Delete /opt/bin/kubelet
+  file: path=/opt/bin/kubelet state=absent
+  become: true
+  
+- name: Delete /etc/default/kubelet
+  file: path=/etc/default/kubelet state=absent
+  become: true
+
+# Uninstall kube-proxy
+
+- name: Stop kube-proxy
+  service: name=kube-proxy state=stopped
+  become: true
+  ignore_errors: yes
+
+- name: Delete /etc/default/kube-proxy
+  file: path=/etc/default/kube-proxy state=absent
+  become: true
+  
+- name: Delete /etc/init/kube-proxy.conf
+  file: path=/etc/init/kube-proxy.conf state=absent
+  become: true
+  
+- name: Delete /opt/bin/kube-proxy
+  file: path=/opt/bin/kube-proxy state=absent
+  become: true
+
+- name: Delete /etc/init.d/kube-proxy
+  file: path=/etc/init.d/kube-proxy state=absent
+  become: true
+
+# Uninstall Glusterfs client
+  
+- name: Delete glusterfs repository
+  apt_repository: repo='deb http://ppa.launchpad.net/gluster/glusterfs-3.7/ubuntu trusty main' filename=glusterfs.list state=absent
+  become: true
+
+- name: Uninstall glusterfs client
+  apt: name=glusterfs-client state=absent purge=yes
+  become: true
+
+- name: Uninstall glusterfs common
+  apt: name=glusterfs-common state=absent purge=yes
+  become: true

@@ -1,0 +1,21 @@
+# Uninstall NTP server
+
+- name: Stop ntp
+  service: name=ntp state=stopped
+  become: true
+  ignore_errors: yes
+
+- name: Uninstall ntp
+  apt: name=ntp state=absent purge=yes
+  become: true
+
+# Uninstall python pip
+
+- name: Uninstall httplib2
+  pip: name=httplib2 state=absent
+  become: yes
+  ignore_errors: yes
+
+- name: Uninstall ntp
+  apt: name=python-pip state=absent purge=yes
+  become: true

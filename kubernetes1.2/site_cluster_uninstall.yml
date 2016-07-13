@@ -1,0 +1,59 @@
+# Shared
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/shared/tasks/common_uninstall.yml
+
+# Master
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/master/tasks/etcd_uninstall.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/master/tasks/etcd_data_delete.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/shared/tasks/flannel_uninstall.yml
+  
+- hosts: master_node_host
+  tasks:
+  - include: roles/master/tasks/kubernetes_certificate_delete.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/master/tasks/kubernetes_master_uninstall.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/shared/tasks/cloudone_node_health_uninstall.yml
+
+# Node
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/kubernetes_node_uninstall.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/docker_uninstall.yml
+
+# Glusterfs server
+
+- hosts: glusterfs_host
+  tasks:
+  - include: roles/glusterfs/tasks/glusterfs_uninstall.yml
+
+# Service/Application on the Kubernetes
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/private_registry_certificate_delete.yml
+
+# HAproxy
+
+- hosts: haproxy_host
+  tasks:
+  - include: roles/haproxy/tasks/haproxy_uninstall.yml

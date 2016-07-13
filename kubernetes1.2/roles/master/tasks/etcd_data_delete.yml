@@ -1,0 +1,5 @@
+# Delete directory /infra{{ hostname }}.etcd recursively
+
+- name: Delete directory /infra{{ hostname }}.etcd recursively
+  file: path=/infra{{ hostname }}.etcd state=absent
+  become: true

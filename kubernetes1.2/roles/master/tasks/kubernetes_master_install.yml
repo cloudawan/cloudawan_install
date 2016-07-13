@@ -64,7 +64,7 @@
   
 # Install kube-coordinator
 
-- name: Creates directory
+- name: Creates directory /srv/kube-coordinator
   file: path=/srv/kube-coordinator state=directory
   become: true
 

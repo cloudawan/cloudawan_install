@@ -1,0 +1,26 @@
+# Uninstall etcd
+
+- name: Stop etcd
+  service: name=etcd state=stopped
+  become: true
+  ignore_errors: yes
+
+- name: Delete /opt/bin/etcd
+  file: path=/opt/bin/etcd state=absent
+  become: true
+
+- name: Delete /opt/bin/etcdctl
+  file: path=/opt/bin/etcdctl state=absent
+  become: true
+
+- name: Delete /etc/init.d/etcd
+  file: path=/etc/init.d/etcd state=absent
+  become: true
+
+- name: Delete /etc/init/etcd.conf
+  file: path=/etc/init/etcd.conf state=absent
+  become: true
+
+- name: Delete /etc/default/etcd
+  file: path=/etc/default/etcd state=absent
+  become: true

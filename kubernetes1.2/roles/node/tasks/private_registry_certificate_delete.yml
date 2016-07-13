@@ -1,0 +1,21 @@
+# Delete certificates
+
+- name: Delete /etc/docker/certs.d/private-registry:31000/ca.crt
+  file: path=/etc/docker/certs.d/private-registry:31000/ca.crt state=absent
+  become: true
+
+- name: Delete directory /etc/docker/certs.d/private-registry:31000 recursively
+  file: path=/etc/docker/certs.d/private-registry:31000 state=directory state=absent
+  become: true
+
+- name: Delete /srv/kubernetes/private_registry_cert.pem
+  file: path=/srv/kubernetes/private_registry_cert.pem state=absent
+  become: true
+  
+- name: Delete /srv/kubernetes/private_registry_key.pem
+  file: path=/srv/kubernetes/private_registry_key.pem state=absent
+  become: true
+
+- name: Delete directory /srv/kubernetes
+  file: path=/srv/kubernetes state=directory state=absent
+  become: true

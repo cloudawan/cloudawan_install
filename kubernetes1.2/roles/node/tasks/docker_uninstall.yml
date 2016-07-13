@@ -1,0 +1,38 @@
+# Delete Linux bridge
+  
+- name: Uninstall linux bridge
+  apt: name=bridge-utils state=absent purge=yes
+  become: true
+
+# Stop and delete all docker containers
+
+- name: Stop and delete all docker containers
+  shell: sudo docker rm -f $(sudo docker ps -a -q)
+  become: true
+  ignore_errors: yes
+
+# Delete all docker images
+
+- name: Stop and delete all docker containers
+  shell: sudo docker rmi -f $(sudo docker images -q)
+  become: true
+  ignore_errors: yes
+
+# Delete Docker
+
+- name: Stop docker
+  service: name=docker state=stopped
+  become: true
+  ignore_errors: yes
+
+- name: Delete docker repository
+  apt_repository: repo='deb https://apt.dockerproject.org/repo ubuntu-trusty main' filename=docker state=absent
+  become: true
+  
+- name: Delete apt-get key
+  apt_key: keyserver=hkp://p80.pool.sks-keyservers.net:80 id=58118E89F3A912897C070ADBF76221572C52609D state=absent
+  become: true
+
+- name: Uninstall docker
+  apt: name=docker-engine state=absent purge=yes
+  become: true

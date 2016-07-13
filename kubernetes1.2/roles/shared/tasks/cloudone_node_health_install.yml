@@ -1,6 +1,6 @@
-# Create python program cloudone_node_health
+# Install cloudone_node_health
 
-- name: Creates directory
+- name: Creates directory /srv/cloudone_node_health
   file: path=/srv/cloudone_node_health state=directory
   become: true
 

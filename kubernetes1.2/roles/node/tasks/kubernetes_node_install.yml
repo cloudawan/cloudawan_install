@@ -52,7 +52,7 @@
   copy: src=roles/node/files/etc/init.d/kube-proxy dest=/etc/init.d/kube-proxy
   become: true
 
-- name: Run kubelet
+- name: Run kube-proxy
   service: name=kube-proxy state=started
   become: true
 

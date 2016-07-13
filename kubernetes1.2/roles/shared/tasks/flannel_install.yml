@@ -5,15 +5,15 @@
   become: true
   
 - name: Copy /etc/init.d/flanneld
-  copy: src=roles/shared/files/etc/init.d/flanneld dest=/etc/init.d/flanneld mode=0755
+  copy: src=roles/shared/files/etc/init.d/flanneld dest=/etc/init.d/flanneld
   become: true
 
 - name: Copy /etc/init/flanneld.conf
-  copy: src=roles/shared/files/etc/init/flanneld.conf dest=/etc/init/flanneld.conf mode=0755
+  copy: src=roles/shared/files/etc/init/flanneld.conf dest=/etc/init/flanneld.conf
   become: true
   
 - name: Copy /etc/default/flanneld
-  copy: src=roles/shared/files/etc/default/flanneld dest=/etc/default/flanneld mode=0755
+  copy: src=roles/shared/files/etc/default/flanneld dest=/etc/default/flanneld
   become: true
 
 - name: Run flanneld

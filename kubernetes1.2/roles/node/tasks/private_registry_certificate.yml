@@ -1,19 +1,15 @@
 # Prepare certificates
 
-- name: Creates directory
-  file: path=/etc/docker state=directory
-  become: true
-  
-- name: Creates directory
-  file: path=/etc/docker/certs.d state=directory
-  become: true
-  
-- name: Creates directory
+- name: Creates directory /etc/docker/certs.d/private-registry:31000
   file: path=/etc/docker/certs.d/private-registry:31000 state=directory
   become: true
   
-- name: Copy /srv/kubernetes/cacert.pem
+- name: Copy /etc/docker/certs.d/private-registry:31000/ca.crt
   copy: src=roles/node/files/srv/kubernetes/cacert.pem dest=/etc/docker/certs.d/private-registry:31000/ca.crt
+  become: true
+
+- name: Creates directory /srv/kubernetes
+  file: path=/srv/kubernetes state=directory
   become: true
 
 - name: Copy /srv/kubernetes/private_registry_cert.pem

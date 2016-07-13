@@ -1,0 +1,18 @@
+# Uninstall cloudone_node_health
+
+- name: Stop cloudone_node_health
+  service: name=cloudone_node_health state=stopped
+  become: true
+  ignore_errors: yes
+
+- name: Delete /srv/cloudone_node_health/cloudone_node_health.py
+  file: path=/srv/cloudone_node_health/cloudone_node_health.py state=absent
+  become: true
+  
+- name: Delete /etc/init/cloudone_node_health.conf
+  file: path=/etc/init/cloudone_node_health.conf state=absent
+  become: true
+  
+- name: Delete directory /srv/cloudone_node_health recursively
+  file: path=/srv/cloudone_node_health state=absent
+  become: true

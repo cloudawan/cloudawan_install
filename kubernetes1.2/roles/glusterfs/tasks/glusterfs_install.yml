@@ -15,10 +15,6 @@
 # Create directory for the volumes
   
 - name: Creates directory
-  file: path=/data state=directory
-  become: true
-
-- name: Creates directory
   file: path=/data/glusterfs state=directory
   become: true
   

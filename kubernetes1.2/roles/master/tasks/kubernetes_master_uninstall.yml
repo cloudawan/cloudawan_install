@@ -1,0 +1,93 @@
+# Uninstall kube-coordinator
+
+- name: Stop kube-coordinator
+  service: name=kube-coordinator state=stopped
+  become: true
+  ignore_errors: yes
+
+- name: Delete /srv/kube-coordinator/kube-coordinator.py
+  file: path=/srv/kube-coordinator/kube-coordinator.py state=absent
+  become: true
+  
+- name: Delete /etc/init/kube-coordinator.conf
+  file: path=/etc/init/kube-coordinator.conf state=absent
+  become: true
+
+- name: Delete directory /srv/kube-coordinator recursively
+  file: path=/srv/kube-coordinator state=absent
+  become: true
+
+# Uninstall kube-apiserver
+
+- name: Stop kube-apiserver
+  service: name=kube-apiserver state=stopped
+  become: true
+  ignore_errors: yes
+
+- name: Delete /opt/bin/kube-apiserver
+  file: path=/opt/bin/kube-apiserver state=absent
+  become: true
+  
+- name: Delete /etc/init.d/kube-apiserver
+  file: path=/etc/init.d/kube-apiserver state=absent
+  become: true
+  
+- name: Delete /etc/init/kube-apiserver.conf
+  file: path=/etc/init/kube-apiserver.conf state=absent
+  become: true
+  
+- name: Delete /etc/default/kube-apiserver
+  file: path=/etc/default/kube-apiserver state=absent
+  become: true
+
+# Uninstall kube-controller-manager
+
+- name: Stop kube-controller-manager
+  service: name=kube-controller-manager state=stopped
+  become: true
+  ignore_errors: yes
+
+- name: Delete /etc/default/kube-controller-manager
+  file: path=/etc/default/kube-controller-manager state=absent
+  become: true
+  
+- name: Delete /etc/init.d/kube-controller-manager
+  file: path=/etc/init.d/kube-controller-manager state=absent
+  become: true
+  
+- name: Delete /opt/bin/kube-controller-manager
+  file: path=/opt/bin/kube-controller-manager state=absent
+  become: true
+  
+- name: Delete /etc/init/kube-controller-manager.conf
+  file: path=/etc/init/kube-controller-manager.conf state=absent
+  become: true
+  
+# Uninstall kube-scheduler
+
+- name: Stop kube-scheduler
+  service: name=kube-scheduler state=stopped
+  become: true
+  ignore_errors: yes
+
+- name: Delete /etc/default/kube-scheduler
+  file: path=/etc/default/kube-scheduler state=absent
+  become: true
+  
+- name: Delete /etc/init.d/kube-scheduler
+  file: path=/etc/init.d/kube-scheduler state=absent
+  become: true
+  
+- name: Delete /opt/bin/kube-scheduler
+  file: path=/opt/bin/kube-scheduler state=absent
+  become: true
+  
+- name: Delete /etc/init/kube-scheduler.conf
+  file: path=/etc/init/kube-scheduler.conf state=absent
+  become: true
+  
+# Uninstall kubectl
+
+- name: Delete /usr/local/bin/kubectl
+  file: path=/usr/local/bin/kubectl state=absent
+  become: true

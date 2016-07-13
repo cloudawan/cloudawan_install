@@ -1,0 +1,27 @@
+# Delete certificates
+
+- name: Delete /srv/kubernetes/ca.crt
+  file: path=/srv/kubernetes/ca.crt  state=absent
+  become: true
+  
+- name: Delete /srv/kubernetes/kubecfg.crt
+  file: path=/srv/kubernetes/kubecfg.crt state=absent
+  become: true
+
+- name: Delete /srv/kubernetes/kubecfg.key
+  file: path=/srv/kubernetes/kubecfg.key state=absent
+  become: true
+  
+- name: Delete /srv/kubernetes/server.cert
+  file: path=/srv/kubernetes/server.cert state=absent
+  become: true
+  
+- name: Delete /srv/kubernetes/server.key
+  file: path=/srv/kubernetes/server.key state=absent
+  become: true
+
+# Delete certificate directory recursively
+
+- name: Creates directory /srv/kubernetes recursively
+  file: path=/srv/kubernetes state=absent
+  become: true

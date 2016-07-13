@@ -1,0 +1,42 @@
+# Uninstall glusterfs server
+
+- name: Stop glusterfs-server
+  service: name=glusterfs-server state=stopped
+  become: true
+  ignore_errors: yes
+
+- name: Run apt-get remove glusterfs server
+  apt: name=glusterfs-server state=absent purge=yes
+  become: true
+  
+- name: Run apt-get remove glusterfs client
+  apt: name=glusterfs-client state=absent purge=yes
+  become: true
+  
+- name: Run apt-get remove glusterfs common
+  apt: name=glusterfs-common state=absent purge=yes
+  become: true
+
+- name: Delete glusterfs repository
+  apt_repository: repo='deb http://ppa.launchpad.net/gluster/glusterfs-3.7/ubuntu trusty main' filename=glusterfs state=absent
+  become: true
+
+- name: Stop and delete all /usr/sbin/glusterfs
+  shell: sudo kill $(pgrep -f /usr/sbin/glusterfs)
+  become: true
+  ignore_errors: yes
+
+- name: Stop and delete all /usr/sbin/glusterd
+  shell: sudo kill $(pgrep -f /usr/sbin/glusterd)
+  become: true
+  ignore_errors: yes
+
+# Delete directory for the volumes recursively
+  
+- name: Delete directory /data/glusterfs recursively
+  file: path=/data/glusterfs state=absent
+  become: true
+  
+- name: Delete directory /var/lib/glusterd recursively
+  file: path=/var/lib/glusterd state=absent
+  become: true

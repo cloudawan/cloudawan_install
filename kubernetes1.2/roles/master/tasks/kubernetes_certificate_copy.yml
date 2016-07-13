@@ -1,9 +1,5 @@
 # Create certificate directory
 
-- name: Creates directory /srv for certificate
-  file: path=/srv state=directory
-  become: true
-
 - name: Creates directory /srv/kubernetes for certificate
   file: path=/srv/kubernetes state=directory
   become: true
