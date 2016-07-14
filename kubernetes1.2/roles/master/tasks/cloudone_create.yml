@@ -3,8 +3,8 @@
 - name: Copy etcd-service.json
   copy: src=roles/master/files/etcd-service.json dest=/tmp/etcd-service.json
 
-- name: Copy cloudone-controller-glusterfs.json
-  copy: src=roles/master/templates/cloudone-controller-glusterfs.json.j2 dest=/tmp/cloudone-controller-glusterfs.json
+- name: Create cloudone-controller-glusterfs.json
+  template: src=roles/master/templates/cloudone-controller-glusterfs.json.j2 dest=/tmp/cloudone-controller-glusterfs.json backup=no force=yes
 
 - name: Copy cloudone-service.json
   copy: src=roles/master/files/cloudone-service.json dest=/tmp/cloudone-service.json
