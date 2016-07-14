@@ -1,3 +1,9 @@
+# Module requirement
+
+- name: Install docker-py
+  pip: name=docker-py
+  become: yes
+
 # Retrieve
 
 - name: Retrieve cloudawan/cassandra
