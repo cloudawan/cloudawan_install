@@ -10,18 +10,34 @@
   docker_image:
     name: cloudawan/cloudone
   become: yes
-  
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
+
 - name: Retrieve cloudawan/cloudone_gui
   docker_image:
     name: cloudawan/cloudone_gui
   become: yes
-  
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
+
 - name: Retrieve cloudawan/cloudone_analysis
   docker_image:
     name: cloudawan/cloudone_analysis
   become: yes
-  
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
+
 - name: Retrieve cloudawan/elasticsearch
   docker_image:
     name: cloudawan/elasticsearch
   become: yes
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5

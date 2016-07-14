@@ -4,14 +4,25 @@
   docker_image:
     name: cloudawan/cassandra
   become: yes
-  
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
+
 - name: Retrieve cloudawan/mariadb-galera
   docker_image:
     name: cloudawan/mariadb-galera
   become: yes
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
   
 - name: Retrieve cloudawan/rabbitmq
   docker_image:
     name: cloudawan/rabbitmq
   become: yes
-  
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
