@@ -26,7 +26,7 @@
                             "path": "/srv/kubernetes"
                         }
                     },
-					{
+                    {
                         "name": "private-registry-volume",
                         "glusterfs": {
                             "endpoints": "glusterfs",
@@ -65,7 +65,7 @@
                                 "readOnly": true,
                                 "mountPath": "/certs"
                             },
-							{
+                            {
                                 "name": "private-registry-volume",
                                 "readOnly": false,
                                 "mountPath": "/var/lib/registry"
@@ -82,7 +82,11 @@
                             }
                         }
                     }
-                ]
+                ],
+                "nodeSelector": {
+                    "region": "{{ private_registry_region }}",
+                    "zone": "{{ private_registry_zone }}"
+                }
             }
         }
     }

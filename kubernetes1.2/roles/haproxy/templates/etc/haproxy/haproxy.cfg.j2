@@ -30,6 +30,14 @@ listen cloudone_gui :443
     server {{ hostvars[ip]['hostname'] }} {{ ip }}:30003
 {% endfor %}
 
+listen etcd :4001
+    mode tcp
+    option tcplog
+    balance roundrobin
+{% for ip in groups['master_node'] %}
+    server {{ hostvars[ip]['hostname'] }} {{ ip }}:4001
+{% endfor %}
+		
 listen kubeapi :8080
     mode tcp
     option tcplog

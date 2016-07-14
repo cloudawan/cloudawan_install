@@ -1,0 +1,45 @@
+# Shared
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/shared/tasks/common_install.yml
+
+# Node
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/shared/tasks/flannel_external_etcd_install.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/docker_install.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/docker_reconfigure.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/kubernetes_node_external_master_install.yml
+  
+- hosts: master_node_host
+  tasks:
+  - include: roles/shared/tasks/cloudone_node_health_external_master_install.yml
+
+# Configure hostname of private-registry
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/hosts.yml
+
+# Configure on cloudone
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/cloudone_host_credential_configure.yml
+
+# Service/Application on the Kubernetes
+  
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/cloudawan_image_retrieve.yml

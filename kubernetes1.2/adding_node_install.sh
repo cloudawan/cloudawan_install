@@ -8,4 +8,4 @@ sudo apt-get install -y --force-yes ansible
 # To avoid the known host list issue
 export ANSIBLE_HOST_KEY_CHECKING=False
 
-ansible-playbook -i hosts_cluster --timeout=1800 -vvvv site_cluster_install.yml
+ansible-playbook -i hosts_adding_node --timeout=1800 -vvvv site_adding_node_install.yml

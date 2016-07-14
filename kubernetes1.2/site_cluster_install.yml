@@ -20,7 +20,7 @@
 
 - hosts: master_node_host
   tasks:
-  - include: roles/shared/tasks/flannel_install.yml
+  - include: roles/shared/tasks/flannel_self_etcd_install.yml
 
 - hosts: master_node_configuring
   tasks:
@@ -40,7 +40,7 @@
 
 - hosts: master_node_host
   tasks:
-  - include: roles/shared/tasks/cloudone_node_health_install.yml
+  - include: roles/shared/tasks/cloudone_node_health_self_master_install.yml
 
 # Node
 
@@ -54,7 +54,7 @@
 
 - hosts: master_node_host
   tasks:
-  - include: roles/node/tasks/kubernetes_node_install.yml
+  - include: roles/node/tasks/kubernetes_node_self_master_install.yml
 
 # Glusterfs server
 

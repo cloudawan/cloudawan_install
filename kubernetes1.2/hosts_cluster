@@ -1,4 +1,4 @@
-# All Kubernetes Master role and Node role hosts
+# Kubernetes Master role or Node role hosts
 [master_node:children]
 master_node_host
 master_node_configuring
@@ -9,6 +9,11 @@ flannel_subnet_mask_bit=16
 service_cluster_ip_range=172.17.3.0/24
 service_cluster_dns_ip=172.17.3.10
 node_label="region=region1,zone=zone1"
+# Restrict the location to deploy
+private_registry_region="region1"
+private_registry_zone="zone1"
+cloudone_all_region="region1"
+cloudone_all_zone="zone1"
 
 # Install infrastructure
 [master_node_host]

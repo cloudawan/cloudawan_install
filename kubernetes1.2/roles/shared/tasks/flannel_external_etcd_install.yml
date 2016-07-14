@@ -1,0 +1,22 @@
+# Install flannel
+  
+- name: Copy /opt/bin/flanneld
+  copy: src=roles/shared/files/opt/bin/flanneld dest=/opt/bin/flanneld mode=0755
+  become: true
+  
+- name: Copy /etc/init.d/flanneld
+  copy: src=roles/shared/files/etc/init.d/flanneld dest=/etc/init.d/flanneld
+  become: true
+
+- name: Copy /etc/init/flanneld.conf
+  copy: src=roles/shared/files/etc/init/flanneld.conf_node dest=/etc/init/flanneld.conf
+  become: true
+
+- name: Create the /etc/default/flanneld
+  template: src=roles/shared/templates/etc/default/flanneld.j2 dest=/etc/default/flanneld backup=no force=yes
+  become: true
+
+- name: Run flanneld
+  service: name=flanneld state=started
+  become: true
+  
