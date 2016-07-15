@@ -1,0 +1,35 @@
+# Configure on cloudone
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/cloudone_host_credential_delete.yml
+
+# Notify Kubernetes to delete the Node host
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/kubernetes_notify_apiserver_to_delete_node.yml
+
+# Shared
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/shared/tasks/common_uninstall.yml
+
+# Node
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/kubernetes_node_uninstall.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/docker_uninstall.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/shared/tasks/flannel_uninstall.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/shared/tasks/cloudone_node_health_uninstall.yml

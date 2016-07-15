@@ -1,0 +1,8 @@
+# Delete Node
+
+- name: notify Kubernetes to delete Node host from the list
+  uri:
+    url: http://{{ master_host_slb_vip }}:8080/api/v1/nodes/{{ inventory_hostname }}
+    method: DELETE
+    status_code: 200
+  ignore_errors: yes
