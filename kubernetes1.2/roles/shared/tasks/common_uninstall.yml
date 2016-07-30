@@ -16,6 +16,6 @@
   become: yes
   ignore_errors: yes
 
-- name: Uninstall ntp
+- name: Uninstall pip
   apt: name=python-pip state=absent purge=yes
   become: true

@@ -31,7 +31,7 @@
 
 # Install python pip
 
-- name: Run apt-get to install ntp
+- name: Run apt-get to install pip
   apt: name=python-pip
   become: true
   register: result
