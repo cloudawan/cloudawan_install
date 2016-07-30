@@ -1,5 +1,9 @@
 # Install HAProxy and keepalived
 
+- name: Add keepalived repository
+  apt_repository: repo='deb http://ppa.launchpad.net/keepalived/stable/ubuntu trusty main' filename=keepalived
+  become: true
+
 - name: Install keepalived
   apt: name=keepalived update_cache=yes
   become: true
