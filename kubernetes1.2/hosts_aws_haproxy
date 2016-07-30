@@ -23,5 +23,6 @@ aws_secret_access_key=XXXXXXXXXXXXXXXXXXXXX
 default_region=us-west-1
 
 [haproxy_host]
+# The peer is the counter part. For the master, the peer is the slave. For the slave, the peer is the master.
 192.168.0.74 ansible_user=username ansible_ssh_pass=password ansible_become_pass=password state=MASTER peer_host=192.168.0.75 aws_instance_id=i-aae08aef self_network_interface_id=eni-d5fdf3fd peer_network_interface_id=eni-d6fdf3fe
 192.168.0.75 ansible_user=username ansible_ssh_pass=password ansible_become_pass=password state=BACKUP peer_host=192.168.0.74 aws_instance_id=i-abe08aee self_network_interface_id=eni-d6fdf3fe peer_network_interface_id=eni-d5fdf3fd
