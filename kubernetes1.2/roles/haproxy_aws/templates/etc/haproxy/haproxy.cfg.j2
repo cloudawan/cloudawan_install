@@ -1,0 +1,56 @@
+global
+        log /dev/log    local0
+        log /dev/log    local1 notice
+        chroot /var/lib/haproxy
+        user haproxy
+        group haproxy
+        daemon
+
+defaults
+        log     global
+        mode    tcp
+        option  tcplog
+        option  dontlognull
+        contimeout 600000
+        clitimeout 600000
+        srvtimeout 600000
+        errorfile 400 /etc/haproxy/errors/400.http
+        errorfile 403 /etc/haproxy/errors/403.http
+        errorfile 408 /etc/haproxy/errors/408.http
+        errorfile 500 /etc/haproxy/errors/500.http
+        errorfile 502 /etc/haproxy/errors/502.http
+        errorfile 503 /etc/haproxy/errors/503.http
+        errorfile 504 /etc/haproxy/errors/504.http
+
+listen cloudone_gui :443
+    mode tcp
+    option tcplog
+    balance roundrobin
+{% for ip in groups['master_node_host'] %}
+    server {{ ip }} {{ ip }}:30003
+{% endfor %}
+
+listen etcd :4001
+    mode tcp
+    option tcplog
+    balance roundrobin
+{% for ip in groups['master_node_host'] %}
+    server {{ ip }} {{ ip }}:4001
+{% endfor %}
+		
+listen kubeapi :8080
+    mode tcp
+    option tcplog
+    balance roundrobin
+{% for ip in groups['master_node_host'] %}
+    server {{ ip }} {{ ip }}:8080
+{% endfor %}
+		
+listen all :30000-32767
+    mode tcp
+    option tcplog
+    balance roundrobin
+{% for ip in groups['master_node_host'] %}
+    server {{ ip }} {{ ip }}
+{% endfor %}
+	

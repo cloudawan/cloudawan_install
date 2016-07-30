@@ -1,0 +1,5 @@
+# HAproxy
+
+- hosts: haproxy_host
+  tasks:
+  - include: roles/haproxy_aws/tasks/haproxy_uninstall.yml

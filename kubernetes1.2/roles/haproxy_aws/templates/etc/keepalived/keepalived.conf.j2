@@ -1,0 +1,20 @@
+vrrp_script chk_haproxy {
+  script "pidof haproxy"
+  interval 1
+  fall 2
+}
+vrrp_instance 50 {
+  virtual_router_id 50
+  advert_int 1
+  priority 101
+  state {{ state }}
+  interface eth0
+  unicast_src_ip {{ inventory_hostname }}      # My IP
+  unicast_peer {
+    {{ peer_host }}                            # peer IP             
+  }
+  track_script {
+    chk_haproxy
+  }
+  notify_master /etc/keepalived/master.sh
+}

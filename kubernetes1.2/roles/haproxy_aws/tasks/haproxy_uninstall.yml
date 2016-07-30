@@ -1,0 +1,45 @@
+# Uninstall HAProxy and keepalived
+
+- name: Stop keepalived 
+  service: name=keepalived state=stopped
+  become: true
+  ignore_errors: yes
+  
+- name: Stop haproxy
+  service: name=haproxy state=stopped
+  become: true
+  ignore_errors: yes
+
+- name: Uninstall keepalived
+  apt: name=keepalived state=absent purge=yes
+  become: true
+  
+- name: Uninstall haproxy
+  apt: name=haproxy state=absent purge=yes
+  become: true
+
+- name: Delete /etc/keepalived/master.sh
+  file: path=/etc/keepalived/master.sh state=absent
+  become: true
+
+# Uninstall aws cli
+
+- name: Uninstall awscli
+  pip: name=awscli state=absent
+  become: yes
+  ignore_errors: yes
+
+- name: Uninstall pip
+  apt: name=python-pip state=absent purge=yes
+  become: true
+
+# Delete AWS CLI configuration
+# The service is run by the user root so the config and credentials need to be placed on /root
+  
+- name: Delete ~/.aws/config
+  file: path=/root/.aws/config state=absent
+  become: true
+
+- name: Delete ~/.aws/credentials
+  file: path=/root/.aws/credentials state=absent
+  become: true

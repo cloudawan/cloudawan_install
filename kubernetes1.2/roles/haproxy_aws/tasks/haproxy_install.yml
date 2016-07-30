@@ -1,0 +1,78 @@
+# Install AWS CLI
+
+- name: Run apt-get to install pip
+  apt: name=python-pip
+  become: true
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
+
+- name: Install awscli
+  pip: name=awscli
+  become: yes
+
+# Configure AWS CLI
+# The service is run by the user root so the config and credentials need to be placed on /root
+
+- name: Creates directory ~/.aws
+  file: path=/root/.aws/ state=directory
+  become: yes
+
+- name: Create ~/.aws/config
+  template: src=roles/haproxy_aws/templates/aws/config.j2 dest=/root/.aws/config backup=no force=yes
+  become: yes
+
+- name: Create ~/.aws/credentials
+  template: src=roles/haproxy_aws/templates/aws/credentials.j2 dest=/root/.aws/credentials backup=no force=yes
+  become: yes
+
+# Install HAProxy and keepalived
+
+- name: Add keepalived repository
+  apt_repository: repo='deb http://ppa.launchpad.net/keepalived/stable/ubuntu trusty main' filename=keepalived
+  become: true
+
+- name: Install keepalived
+  apt: name=keepalived update_cache=yes force=yes
+  become: true
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
+  
+- name: Install haproxy
+  apt: name=haproxy update_cache=yes
+  become: true
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
+  
+- name: Create keepalived configuration
+  template: src=roles/haproxy_aws/templates/etc/keepalived/keepalived.conf.j2 dest=/etc/keepalived/keepalived.conf backup=no force=yes
+  become: true
+
+- name: Create script to disassociate/associate aws eip
+  template: src=roles/haproxy_aws/templates/etc/keepalived/master.sh.j2 dest=/etc/keepalived/master.sh backup=no force=yes mode=0755
+  become: true
+
+- name: Create HAproxy configuration
+  template: src=roles/haproxy_aws/templates/etc/haproxy/haproxy.cfg.j2 dest=/etc/haproxy/haproxy.cfg backup=no force=yes
+  become: true
+  
+- name: Modify /etc/default/haproxy
+  lineinfile: dest=/etc/default/haproxy line="ENABLED=1"
+  become: true
+  
+- name: Modify /etc/default/haproxy
+  lineinfile: dest=/etc/default/haproxy line="ENABLED=0" state=absent
+  become: true
+  
+- name: Run keepalived 
+  service: name=keepalived state=restarted
+  become: true
+  
+- name: Run haproxy
+  service: name=haproxy state=restarted
+  become: true

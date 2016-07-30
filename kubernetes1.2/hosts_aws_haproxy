@@ -1,0 +1,27 @@
+# Kuberntes Master Host or Node Host. That is, the target servers to route to.
+# Notice that the target servers should not be across the regions where the network can't be ignored. In that case, GSLB (AWS Route 53) should be considered.
+
+[master_node_host]
+192.168.0.71
+192.168.0.72
+192.168.0.73
+
+# HAproxy
+[haproxy:children]
+haproxy_host
+
+[haproxy:vars]
+# For outside AWS
+aws_eip=52.52.50.33
+# For inside AWS
+haproxy_floating_ip=192.168.0.150
+# AWS IAM aws_access_key_id and aws_secret_access_key should be created separately for security issue. Don't use root credential since the profile is stored on the instances.
+# This credential should have at least network privilege to associate/disassociate elasitc ip and private ip
+aws_access_key_id=AKIAJUGGE32QDUWIJ4ZA
+aws_secret_access_key=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
+# The region where the instances are
+default_region=us-west-1
+
+[haproxy_host]
+192.168.0.74 ansible_user=username ansible_ssh_pass=password ansible_become_pass=password state=MASTER peer_host=192.168.0.75 aws_instance_id=i-aae08aef self_network_interface_id=eni-d5fdf3fd peer_network_interface_id=eni-d6fdf3fe
+192.168.0.75 ansible_user=username ansible_ssh_pass=password ansible_become_pass=password state=BACKUP peer_host=192.168.0.74 aws_instance_id=i-abe08aee self_network_interface_id=eni-d6fdf3fe peer_network_interface_id=eni-d5fdf3fd
