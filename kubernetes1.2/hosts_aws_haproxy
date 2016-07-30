@@ -17,8 +17,8 @@ aws_eip=52.52.50.33
 haproxy_floating_ip=192.168.0.150
 # AWS IAM aws_access_key_id and aws_secret_access_key should be created separately for security issue. Don't use root credential since the profile is stored on the instances.
 # This credential should have at least network privilege to associate/disassociate elasitc ip and private ip
-aws_access_key_id=AKIAJUGGE32QDUWIJ4ZA
-aws_secret_access_key=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
+aws_access_key_id=XXXXXXXXXXXXXXXXXXXXX
+aws_secret_access_key=XXXXXXXXXXXXXXXXXXXXX
 # The region where the instances are
 default_region=us-west-1
 
