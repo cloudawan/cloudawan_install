@@ -5,7 +5,7 @@
   become: true
 
 - name: Install keepalived
-  apt: name=keepalived update_cache=yes
+  apt: name=keepalived update_cache=yes force=yes
   become: true
   register: result
   until: result|success
