@@ -27,13 +27,13 @@ cloudone_all_zone="zone1"
 
 
 
-# Network file system 
+# Glusterfs
 [glusterfs:children]
 glusterfs_host
 glusterfs_configuring
 
 [glusterfs:vars]
-# Glusterfs
+# The seed host for other hosts to join during initializing. It could be any one of the hosts
 seed_host=192.168.0.74
 # software_replica_host are the hosts used to hold the volumes used by system programs. They can be picked up from the Glusterfs host list.
 software_replica_host_1=192.168.0.74
