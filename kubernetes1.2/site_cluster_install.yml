@@ -4,6 +4,14 @@
   tasks:
   - include: roles/shared/tasks/common_install.yml
 
+- hosts: glusterfs_host
+  tasks:
+  - include: roles/shared/tasks/common_install.yml
+
+- hosts: haproxy_host
+  tasks:
+  - include: roles/shared/tasks/common_install.yml
+
 # Master
 
 - hosts: master_node_host
