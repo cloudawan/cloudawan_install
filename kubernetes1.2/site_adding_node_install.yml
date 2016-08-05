@@ -39,7 +39,11 @@
   - include: roles/node/tasks/cloudone_host_credential_configure.yml
 
 # Service/Application on the Kubernetes
-  
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/private_registry_certificate.yml
+
 - hosts: master_node_host
   tasks:
   - include: roles/node/tasks/cloudawan_image_retrieve.yml

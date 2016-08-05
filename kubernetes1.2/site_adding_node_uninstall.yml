@@ -33,3 +33,9 @@
 - hosts: master_node_host
   tasks:
   - include: roles/shared/tasks/cloudone_node_health_uninstall.yml
+
+# Service/Application on the Kubernetes
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/private_registry_certificate_delete.yml
