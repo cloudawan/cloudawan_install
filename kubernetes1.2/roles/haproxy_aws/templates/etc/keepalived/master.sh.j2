@@ -3,8 +3,8 @@
 EIP={{ aws_eip }}
 INSTANCE_ID={{ aws_instance_id }}
 
-/usr/local/bin/aws ec2 disassociate-address --public-ip $EIP
-/usr/local/bin/aws ec2 associate-address --public-ip $EIP --instance-id $INSTANCE_ID
+/usr/local/bin/aws ec2 disassociate-address --public-ip $EIP 2>&1
+/usr/local/bin/aws ec2 associate-address --public-ip $EIP --instance-id $INSTANCE_ID 2>&1
 
-/usr/local/bin/aws ec2 unassign-private-ip-addresses --network-interface {{ peer_network_interface_id }} --private-ip-addresses {{ haproxy_floating_ip }}
-/usr/local/bin/aws ec2 assign-private-ip-addresses --network-interface-id {{ self_network_interface_id }} --private-ip-addresses {{ haproxy_floating_ip }}
+/usr/local/bin/aws ec2 unassign-private-ip-addresses --network-interface {{ peer_network_interface_id }} --private-ip-addresses {{ haproxy_floating_ip }} 2>&1
+/usr/local/bin/aws ec2 assign-private-ip-addresses --network-interface-id {{ self_network_interface_id }} --private-ip-addresses {{ haproxy_floating_ip }} 2>&1
