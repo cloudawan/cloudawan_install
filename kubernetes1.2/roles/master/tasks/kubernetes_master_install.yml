@@ -12,8 +12,16 @@
   copy: src=roles/master/files/etc/init/kube-apiserver.conf dest=/etc/init/kube-apiserver.conf
   become: true
   
-- name: Create the /etc/default/kube-apiserver file for all machines
+- name: Create /etc/default/kube-apiserver
   template: src=roles/master/templates/etc/default/kube-apiserver.j2 dest=/etc/default/kube-apiserver backup=no force=yes
+  become: true
+
+- name: Creates directory /srv/kube-apiserver
+  file: path=/srv/kube-apiserver state=directory
+  become: true
+
+- name: Create /srv/kube-apiserver/known_tokens.csv
+  template: src=roles/master/templates/srv/kube-apiserver/known_tokens.csv.j2 dest=/srv/kube-apiserver/known_tokens.csv backup=no force=yes
   become: true
 
 - name: Run kube-apiserver
@@ -37,7 +45,7 @@
 - name: Copy /etc/init/kube-controller-manager.conf
   copy: src=roles/master/files/etc/init/kube-controller-manager.conf dest=/etc/init/kube-controller-manager.conf
   become: true
-  
+
 # Install kube-scheduler
 
 - name: Copy /etc/default/kube-scheduler

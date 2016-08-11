@@ -38,12 +38,12 @@ listen etcd :4001
     server {{ hostvars[ip]['hostname'] }} {{ ip }}:4001
 {% endfor %}
 		
-listen kubeapi :8080
+listen kubeapi :6443
     mode tcp
     option tcplog
     balance roundrobin
 {% for ip in groups['master_node_host'] %}
-    server {{ hostvars[ip]['hostname'] }} {{ ip }}:8080
+    server {{ hostvars[ip]['hostname'] }} {{ ip }}:6443
 {% endfor %}
 		
 listen all :30000-32767

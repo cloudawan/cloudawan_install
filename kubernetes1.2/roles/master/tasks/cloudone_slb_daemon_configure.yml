@@ -1,0 +1,14 @@
+# Create temporarily templates
+
+- name: Create cloudone slb daemon script
+  template: src=roles/master/templates/cloudone_slb_daemon_create.py.j2 dest=/tmp/cloudone_slb_daemon_create.py backup=no force=yes
+
+# Run templates
+
+- name: Run cloudone slb daemon script
+  command: /usr/bin/python /tmp/cloudone_slb_daemon_create.py
+
+# Delete temporarily templates
+
+- name: Delete cloudone_slb_daemon_create.py
+  file: path=/tmp/cloudone_slb_daemon_create.py state=absent

@@ -131,3 +131,11 @@
 - hosts: haproxy_host
   tasks:
   - include: roles/haproxy/tasks/haproxy_install.yml
+
+- hosts: haproxy_host
+  tasks:
+  - include: roles/haproxy/tasks/cloudone_slb_install.yml
+
+- hosts: master_node_configuring
+  tasks:
+  - include: roles/master/tasks/cloudone_slb_daemon_configure.yml

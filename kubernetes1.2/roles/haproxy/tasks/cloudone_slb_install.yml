@@ -1,0 +1,33 @@
+# Install cloudone_slb
+
+- name: Creates directory /srv/cloudone_slb
+  file: path=/srv/cloudone_slb state=directory
+  become: true
+
+- name: Creates directory /etc/cloudone_slb
+  file: path=/etc/cloudone_slb state=directory
+  become: true
+
+- name: Copy /etc/cloudone_slb/development_cert.pem
+  copy: src=roles/haproxy/files/etc/cloudone_slb/configuration/development_cert.pem dest=/etc/cloudone_slb/development_cert.pem
+  become: true
+
+- name: Copy /etc/cloudone_slb/development_key.pem
+  copy: src=roles/haproxy/files/etc/cloudone_slb/configuration/development_key.pem dest=/etc/cloudone_slb/development_key.pem
+  become: true
+
+- name: Copy /srv/cloudone_slb/cloudone_slb
+  copy: src=roles/haproxy/files/etc/cloudone_slb/cloudone_slb dest=/srv/cloudone_slb/cloudone_slb mode="a+x"
+  become: true
+
+- name: Create /etc/cloudone_slb/configuration.json
+  template: src=roles/haproxy/templates/etc/cloudone_slb/configuration/configuration.json.j2 dest=/etc/cloudone_slb/configuration.json backup=no force=yes
+  become: true
+
+- name: Copy /etc/init/cloudone_slb.conf
+  copy: src=roles/haproxy/files/etc/init/cloudone_slb.conf dest=/etc/init/cloudone_slb.conf
+  become: true
+
+- name: Run cloudone_slb
+  service: name=cloudone_slb state=started
+  become: true

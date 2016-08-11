@@ -1,0 +1,45 @@
+import json
+from httplib2 import Http
+
+
+host_and_port = "{{ inventory_hostname }}:30002"
+
+
+h = Http(disable_ssl_certificate_validation=True)
+
+
+body_dictionary = {
+	"Username": "admin",
+	"Password": "password"
+}
+
+head, body = h.request("https://" + host_and_port + "/api/v1/authorizations/tokens", "POST", json.dumps(body_dictionary), headers={"Content-Type": "application/json"})
+if head.status != 200:
+	print head
+	print body
+	raise Exception("Fail to get token")
+
+token = json.loads(body).get("Token")	
+
+body_dictionary = {
+	"Name": "initial_cluster_slb_set",
+	"EndPointSlice": [
+{% for ip in groups['haproxy_host'] %}
+		"https://{{ ip }}:8083",
+{% endfor %}
+	],
+	"NodeHostSlice": [
+{% for ip in groups['master_node_host'] %}
+		"{{ ip }}",
+{% endfor %}
+	],
+	"Description": "SLB set for the initial cluster"
+}
+
+head, body = h.request("https://" + host_and_port + "/api/v1/slbs/daemons", "POST", json.dumps(body_dictionary), headers={"Content-Type": "application/json", "token": token})
+if head.status != 200:
+	print head
+	print body
+	raise Exception("Fail to post")
+
+print "Done"

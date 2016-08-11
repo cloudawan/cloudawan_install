@@ -1,0 +1,22 @@
+# Uninstall cloudone_slb
+
+- name: Stop cloudone_slb
+  service: name=cloudone_slb state=stopped
+  become: true
+  ignore_errors: yes
+
+- name: Delete /srv/cloudone_slb/cloudone_slb
+  file: path=/srv/cloudone_slb/cloudone_slb state=absent
+  become: true
+  
+- name: Delete /etc/init/cloudone_slb.conf
+  file: path=/etc/init/cloudone_slb.conf state=absent
+  become: true
+  
+- name: Delete directory /srv/cloudone_slb recursively
+  file: path=/srv/cloudone_slb state=absent
+  become: true
+
+- name: Delete directory /etc/cloudone_slb recursively
+  file: path=/srv/cloudone_slb state=absent
+  become: true

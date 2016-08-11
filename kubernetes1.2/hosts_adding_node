@@ -8,6 +8,9 @@ service_cluster_dns_ip=172.17.3.10
 node_label="region=region1,zone=zone2"
 # This is the virtual IP in front of all master hosts.
 master_host_slb_vip=192.168.0.150
+# The token to access secured kube-apiserver port 6443
+# This should be the same as the one installed in the initial cluster
+kube_apiserver_access_token="9pIoafGAbaKxdbwuHWZNJqHYS56S0vmh"
 
 # Install infrastructure
 # The hostname here should be the same as IP unless there is the DNS server which could translate the hostname to IP for other machines.

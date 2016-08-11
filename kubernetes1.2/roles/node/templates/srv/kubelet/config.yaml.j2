@@ -1,0 +1,18 @@
+apiVersion: v1
+clusters:
+- cluster:
+    insecure-skip-tls-verify: true
+    server: https://127.0.0.1:6443
+  name: initial_cluster
+contexts:
+- context:
+    cluster: initial_cluster
+    user: kubelet
+  name: kubelet-context
+current-context: kubelet-context
+kind: Config
+preferences: {}
+users:
+- name: kubelet
+  user:
+    token: {{ kube_apiserver_access_token }}

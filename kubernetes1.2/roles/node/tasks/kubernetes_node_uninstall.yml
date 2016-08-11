@@ -21,6 +21,10 @@
   file: path=/etc/default/kubelet state=absent
   become: true
 
+- name: Delete directory /srv/kubelet recursively
+  file: path=/srv/kubelet state=absent
+  become: true
+
 # Uninstall kube-proxy
 
 - name: Stop kube-proxy

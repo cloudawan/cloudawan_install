@@ -1,1 +1,1 @@
-KUBE_PROXY_OPTS=" --master=http://{{ master_host_slb_vip }}:8080  --logtostderr=true"
+KUBE_PROXY_OPTS="  --kubeconfig=/srv/kubelet/config.yaml  --master=https://{{ master_host_slb_vip }}:6443  --logtostderr=true"
