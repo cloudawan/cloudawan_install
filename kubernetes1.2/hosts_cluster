@@ -37,7 +37,9 @@ glusterfs_host
 glusterfs_configuring
 
 [glusterfs:vars]
-# The seed host for other hosts to join during initializing. It could be any one of the hosts
+# This is the ip used to connect to Kubernetes master hosts.
+master_host_slb_vip=192.168.0.150
+# The seed host for other hosts to join during initializing. It could be any one of the hosts.
 seed_host=192.168.0.74
 # software_replica_host are the hosts used to hold the volumes used by system programs. They can be picked up from the Glusterfs host list.
 software_replica_host_1=192.168.0.74
@@ -59,6 +61,7 @@ haproxy_host
 
 [haproxy:vars]
 # This floating ip is in the hot-standby mode. If the active HAProxy server is down, the other will take over.
+# This is also the ip used to connect to Kubernetes master hosts. That is the role of master_host_slb_vip.
 haproxy_floating_ip=192.168.0.150
 # Domain name suffix. This is used to provide domain name service access to the Kubernetes services of the deployed applications. The access entry will be application_name.service_name.domain_name_suffix:container_port
 domain_name_suffix=cloudawan.com

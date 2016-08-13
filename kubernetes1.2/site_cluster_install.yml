@@ -46,10 +46,6 @@
   tasks:
   - include: roles/master/tasks/kubernetes_master_install.yml
 
-- hosts: master_node_host
-  tasks:
-  - include: roles/shared/tasks/cloudone_node_health_self_master_install.yml
-
 # Node
 
 - hosts: master_node_host
@@ -139,3 +135,27 @@
 - hosts: master_node_configuring
   tasks:
   - include: roles/master/tasks/cloudone_slb_daemon_configure.yml
+
+# Cloudone node health
+# The role is incrementally added
+
+- hosts: master_node_host
+  vars:
+    host_type_line: HostTypeKubernetes=True
+    master_host_ip: 127.0.0.1
+  tasks:
+  - include: roles/shared/tasks/cloudone_node_health_install.yml
+
+- hosts: glusterfs_host
+  vars:
+    host_type_line: HostTypeGlusterfs=True
+    master_host_ip: "{{ master_host_slb_vip }}"
+  tasks:
+  - include: roles/shared/tasks/cloudone_node_health_install.yml
+
+- hosts: haproxy_host
+  vars:
+    host_type_line: HostTypeSLB=True
+    master_host_ip: "{{ haproxy_floating_ip }}"
+  tasks:
+  - include: roles/shared/tasks/cloudone_node_health_install.yml

@@ -21,10 +21,6 @@
 - hosts: master_node_host
   tasks:
   - include: roles/node/tasks/kubernetes_node_external_master_install.yml
-  
-- hosts: master_node_host
-  tasks:
-  - include: roles/shared/tasks/cloudone_node_health_external_master_install.yml
 
 # Configure hostname of private-registry
 
@@ -47,3 +43,13 @@
 - hosts: master_node_host
   tasks:
   - include: roles/node/tasks/cloudawan_image_retrieve.yml
+
+# Cloudone node health
+# The role is incrementally added
+
+- hosts: master_node_host
+  vars:
+    host_type_line: HostTypeKubernetes=True
+    master_host_ip: {{ master_host_slb_vip }}
+  tasks:
+  - include: roles/shared/tasks/cloudone_node_health_install.yml
