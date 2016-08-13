@@ -4,10 +4,13 @@ master_node_host
 master_node_configuring
 
 [master_node:vars]
+# The virtual network used for containers to communicate
 flannel_subnet=172.16.0.0
 flannel_subnet_mask_bit=16
+# The virtual network used for the Kubernetes services. This should be the subset of flannel_subnet.
 service_cluster_ip_range=172.17.3.0/24
 service_cluster_dns_ip=172.17.3.10
+# This is used to provide location awareness. The difference between region and zone is that the network delay between zones is small enough to ignore while it is not between regions.
 node_label="region=region1,zone=zone1"
 # Restrict the location to deploy
 private_registry_region="region1"

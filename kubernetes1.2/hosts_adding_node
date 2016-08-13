@@ -4,7 +4,9 @@
 master_node_host
 
 [master_node:vars]
+# This should the same as the one configured in the initial cluster
 service_cluster_dns_ip=172.17.3.10
+# This is used to provide location awareness. The difference between region and zone is that the network delay between zones is small enough to ignore while it is not between regions.
 node_label="region=region1,zone=zone2"
 # This is the virtual IP in front of all master hosts.
 master_host_slb_vip=192.168.0.150
