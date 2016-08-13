@@ -50,6 +50,6 @@
 - hosts: master_node_host
   vars:
     host_type_line: HostTypeKubernetes=True
-    master_host_ip: {{ master_host_slb_vip }}
+    master_host_ip: "{{ master_host_slb_vip }}"
   tasks:
   - include: roles/shared/tasks/cloudone_node_health_install.yml
