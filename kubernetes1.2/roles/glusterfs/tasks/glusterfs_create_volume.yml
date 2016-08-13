@@ -1,7 +1,7 @@
 # Create volume for the private registry
 
 - name: Create volume
-  command: /usr/sbin/gluster volume create private_registry_volume replica 2 {{ software_replica_host_1 }}:/data/glusterfs/private_registry_volume {{ software_replica_host_2 }}:/data/glusterfs/private_registry_volume force
+  command: /usr/sbin/gluster volume create private_registry_volume replica 2 {{ groups['glusterfs_host'][0] }}:/data/glusterfs/private_registry_volume {{ groups['glusterfs_host'][1] }}:/data/glusterfs/private_registry_volume force
   become: true
   
 - name: Start volume
@@ -11,7 +11,7 @@
 # Create volume for cloudone
 
 - name: Create volume
-  command: /usr/sbin/gluster volume create cloudone_elasticsearch_volume replica 2 {{ software_replica_host_1 }}:/data/glusterfs/cloudone_elasticsearch_volume {{ software_replica_host_2 }}:/data/glusterfs/cloudone_elasticsearch_volume force
+  command: /usr/sbin/gluster volume create cloudone_elasticsearch_volume replica 2 {{ groups['glusterfs_host'][0] }}:/data/glusterfs/cloudone_elasticsearch_volume {{ groups['glusterfs_host'][1] }}:/data/glusterfs/cloudone_elasticsearch_volume force
   become: true
   
 - name: Start volume
@@ -47,7 +47,7 @@
   become: true
 
 - name: Create volume
-  command: /usr/sbin/gluster volume create cloudone_gui_configuration_volume replica 2 {{ software_replica_host_1 }}:/data/glusterfs/cloudone_gui_configuration_volume {{ software_replica_host_2 }}:/data/glusterfs/cloudone_gui_configuration_volume force
+  command: /usr/sbin/gluster volume create cloudone_gui_configuration_volume replica 2 {{ groups['glusterfs_host'][0] }}:/data/glusterfs/cloudone_gui_configuration_volume {{ groups['glusterfs_host'][1] }}:/data/glusterfs/cloudone_gui_configuration_volume force
   become: true
 
 - name: Start volume

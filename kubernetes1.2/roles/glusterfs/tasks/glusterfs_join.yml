@@ -1,6 +1,6 @@
 # All glusterfs server join one seed to form the cluster
   
 - name: Join cluster
-  command: /usr/sbin/gluster peer probe {{ seed_host }}
+  command: /usr/sbin/gluster peer probe {{ groups['glusterfs_host'][0] }}
   become: true
  
