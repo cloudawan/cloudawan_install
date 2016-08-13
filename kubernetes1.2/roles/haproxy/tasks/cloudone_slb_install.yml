@@ -17,7 +17,7 @@
   become: true
 
 - name: Copy /srv/cloudone_slb/cloudone_slb
-  copy: src=roles/haproxy/files/etc/cloudone_slb/cloudone_slb dest=/srv/cloudone_slb/cloudone_slb mode="a+x"
+  copy: src=roles/haproxy/files/srv/cloudone_slb/cloudone_slb dest=/srv/cloudone_slb/cloudone_slb mode="a+x"
   become: true
 
 - name: Create /etc/cloudone_slb/configuration.json
