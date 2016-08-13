@@ -21,6 +21,10 @@
   file: path=/etc/default/kubelet state=absent
   become: true
 
+- name: Delete /srv/kubelet/config.yaml
+  file: path=/srv/kubelet/config.yaml state=absent
+  become: true
+
 - name: Delete directory /srv/kubelet recursively
   file: path=/srv/kubelet state=absent
   become: true
