@@ -26,10 +26,6 @@
   tasks:
   - include: roles/master/tasks/kubernetes_master_uninstall.yml
 
-- hosts: master_node_host
-  tasks:
-  - include: roles/shared/tasks/cloudone_node_health_uninstall.yml
-
 # Node
 
 - hosts: master_node_host
@@ -57,3 +53,16 @@
 - hosts: haproxy_host
   tasks:
   - include: roles/haproxy/tasks/haproxy_uninstall.yml
+
+# Cloudone node health
+- hosts: master_node_host
+  tasks:
+  - include: roles/shared/tasks/cloudone_node_health_uninstall.yml
+
+- hosts: glusterfs_host
+  tasks:
+  - include: roles/shared/tasks/cloudone_node_health_uninstall.yml
+  
+- hosts: haproxy_host
+  tasks:
+  - include: roles/shared/tasks/cloudone_node_health_uninstall.yml
