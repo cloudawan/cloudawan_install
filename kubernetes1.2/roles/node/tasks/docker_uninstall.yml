@@ -13,7 +13,7 @@
 
 # Delete all docker images
 
-- name: Stop and delete all docker containers
+- name: Stop and delete all docker images
   shell: sudo docker rmi -f $(sudo docker images -q)
   become: true
   ignore_errors: yes
