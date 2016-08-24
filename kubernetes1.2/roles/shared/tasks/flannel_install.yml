@@ -8,11 +8,11 @@
   copy: src=roles/shared/files/etc/init.d/flanneld dest=/etc/init.d/flanneld
   become: true
 
-- name: Copy /etc/init/flanneld.conf
-  copy: src=roles/shared/files/etc/init/flanneld.conf_node dest=/etc/init/flanneld.conf
+- name: Create /etc/init/flanneld.conf
+  template: src=roles/shared/templates/etc/init/flanneld.conf.j2 dest=/etc/init/flanneld.conf backup=no force=yes
   become: true
 
-- name: Create the /etc/default/flanneld
+- name: Create /etc/default/flanneld
   template: src=roles/shared/templates/etc/default/flanneld.j2 dest=/etc/default/flanneld backup=no force=yes
   become: true
 

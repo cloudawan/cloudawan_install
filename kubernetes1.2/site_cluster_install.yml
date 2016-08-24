@@ -27,8 +27,12 @@
   - include: roles/master/tasks/flannel_preconfigure.yml
 
 - hosts: master_node_host
+  vars:
+    line_start_on: "start on started etcd"
+    line_stop_on: "stop on stopping etcd"
+    master_host_ip: 127.0.0.1
   tasks:
-  - include: roles/shared/tasks/flannel_self_etcd_install.yml
+  - include: roles/shared/tasks/flannel_install.yml
 
 - hosts: master_node_configuring
   tasks:
@@ -57,8 +61,10 @@
   - include: roles/node/tasks/docker_reconfigure.yml
 
 - hosts: master_node_host
+  vars:
+    master_host_ip: 127.0.0.1
   tasks:
-  - include: roles/node/tasks/kubernetes_node_self_master_install.yml
+  - include: roles/node/tasks/kubernetes_node_install.yml
 
 # Glusterfs server
 

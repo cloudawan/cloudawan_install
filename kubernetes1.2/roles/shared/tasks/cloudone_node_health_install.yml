@@ -6,7 +6,7 @@
 
 # Create only if not existing
 - name: Create /srv/cloudone_node_health/cloudone_node_health.py
-  template: src=roles/shared/templates/srv/cloudone_node_health/cloudone_node_health.py_node.j2 dest=/srv/cloudone_node_health/cloudone_node_health.py backup=no force=no
+  template: src=roles/shared/templates/srv/cloudone_node_health/cloudone_node_health.py.j2 dest=/srv/cloudone_node_health/cloudone_node_health.py backup=no force=no
   become: true
 
 # Copy only if not existing

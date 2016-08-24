@@ -7,8 +7,12 @@
 # Node
 
 - hosts: master_node_host
+  vars:
+    line_start_on: "start on net-device-up IFACE!=lo"
+    line_stop_on: "stop on runlevel [!2345]"
+    master_host_ip: "{{ master_host_slb_vip }}"
   tasks:
-  - include: roles/shared/tasks/flannel_external_etcd_install.yml
+  - include: roles/shared/tasks/flannel_install.yml
 
 - hosts: master_node_host
   tasks:
@@ -19,8 +23,10 @@
   - include: roles/node/tasks/docker_reconfigure.yml
 
 - hosts: master_node_host
+  vars:
+    master_host_ip: "{{ master_host_slb_vip }}"
   tasks:
-  - include: roles/node/tasks/kubernetes_node_external_master_install.yml
+  - include: roles/node/tasks/kubernetes_node_install.yml
 
 # Configure hostname of private-registry
 

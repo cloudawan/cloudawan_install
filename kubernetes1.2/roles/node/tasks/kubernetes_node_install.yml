@@ -27,7 +27,7 @@
   become: true
   
 - name: Create the /etc/default/kubelet file for all machines
-  template: src=roles/node/templates/etc/default/kubelet_node.j2 dest=/etc/default/kubelet backup=no force=yes
+  template: src=roles/node/templates/etc/default/kubelet.j2 dest=/etc/default/kubelet backup=no force=yes
   become: true
 
 - name: Creates directory /srv/kubelet
@@ -35,7 +35,7 @@
   become: true
 
 - name: Create /srv/kubelet/config.yaml
-  template: src=roles/node/templates/srv/kubelet/config.yaml_node.j2 dest=/srv/kubelet/config.yaml backup=no force=yes
+  template: src=roles/node/templates/srv/kubelet/config.yaml.j2 dest=/srv/kubelet/config.yaml backup=no force=yes
   become: true
 
 - name: Run kubelet
@@ -45,7 +45,7 @@
 # Install kube-proxy
 
 - name: Create /etc/default/kube-proxy
-  template: src=roles/node/templates/etc/default/kube-proxy_node.j2 dest=/etc/default/kube-proxy backup=no force=yes
+  template: src=roles/node/templates/etc/default/kube-proxy.j2 dest=/etc/default/kube-proxy backup=no force=yes
   become: true
   
 - name: Copy /etc/init/kube-proxy.conf
