@@ -12,11 +12,27 @@
 - name: Delete /etc/init/cloudone_slb.conf
   file: path=/etc/init/cloudone_slb.conf state=absent
   become: true
+
+- name: Delete /srv/cloudone_slb/cloudone_slb
+  file: path=/srv/cloudone_slb/cloudone_slb state=absent
+  become: true
   
 - name: Delete directory /srv/cloudone_slb recursively
   file: path=/srv/cloudone_slb state=absent
   become: true
 
+- name: Delete /etc/cloudone_slb/development_cert.pem
+  file: path=/etc/cloudone_slb/development_cert.pem state=absent
+  become: true
+
+- name: Delete /etc/cloudone_slb/development_key.pem
+  file: path=/etc/cloudone_slb/development_key.pem state=absent
+  become: true
+
+- name: Delete /etc/cloudone_slb/configuration.json
+  file: path=/etc/cloudone_slb/configuration.json state=absent
+  become: true
+
 - name: Delete directory /etc/cloudone_slb recursively
-  file: path=/srv/cloudone_slb state=absent
+  file: path=/etc/cloudone_slb state=absent
   become: true
