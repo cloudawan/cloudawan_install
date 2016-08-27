@@ -19,10 +19,6 @@
   - include: roles/node/tasks/docker_install.yml
 
 - hosts: master_node_host
-  tasks:
-  - include: roles/node/tasks/docker_reconfigure.yml
-
-- hosts: master_node_host
   vars:
     master_host_ip: "{{ master_host_slb_vip }}"
   tasks:

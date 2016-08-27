@@ -1,17 +1,3 @@
-# Install docker
-
-- name: Copy /etc/default/docker
-  copy: src=roles/node/files/etc/default/docker dest=/etc/default/docker
-  become: true
-  
-- name: Copy /etc/init/docker.conf
-  copy: src=roles/node/files/etc/init/docker.conf dest=/etc/init/docker.conf
-  become: true
-  
-- name: Restart docker
-  service: name=docker state=restarted
-  become: true
-
 # Install kubelet
 
 - name: Copy /etc/init/kubelet.conf
