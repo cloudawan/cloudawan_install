@@ -22,8 +22,8 @@
   
 # Install kube-controller-manager
 
-- name: Copy /etc/default/kube-controller-manager
-  copy: src=roles/master/files/etc/default/kube-controller-manager dest=/etc/default/kube-controller-manager
+- name: Create /etc/default/kube-controller-manager
+  template: src=roles/master/templates/etc/default/kube-controller-manager.j2 dest=/etc/default/kube-controller-manager backup=no force=yes
   become: true
   
 - name: Copy /etc/init.d/kube-controller-manager
@@ -40,22 +40,22 @@
 
 # Install kube-scheduler
 
-- name: Copy /etc/default/kube-scheduler
-  copy: src=roles/master/files/etc/default/kube-scheduler dest=/etc/default/kube-scheduler
+- name: Create /etc/default/kube-scheduler
+  template: src=roles/master/templates/etc/default/kube-scheduler.j2 dest=/etc/default/kube-scheduler backup=no force=yes
   become: true
-  
+
 - name: Copy /etc/init.d/kube-scheduler
   copy: src=roles/master/files/etc/init.d/kube-scheduler dest=/etc/init.d/kube-scheduler
   become: true
-  
+
 - name: Copy /opt/bin/kube-scheduler
   copy: src=roles/master/files/opt/bin/kube-scheduler dest=/opt/bin/kube-scheduler mode=0755
   become: true
-  
+
 - name: Copy /etc/init/kube-scheduler.conf
   copy: src=roles/master/files/etc/init/kube-scheduler.conf dest=/etc/init/kube-scheduler.conf
   become: true
-  
+
 # Install kubectl
 
 - name: Copy /usr/local/bin/kubectl
@@ -68,8 +68,8 @@
   file: path=/srv/kube-coordinator state=directory
   become: true
 
-- name: Copy /srv/kube-coordinator/kube-coordinator.py
-  copy: src=roles/master/files/srv/kube-coordinator/kube-coordinator.py dest=/srv/kube-coordinator/kube-coordinator.py
+- name: Create /srv/kube-coordinator/kube-coordinator.py
+  template: src=roles/master/templates/srv/kube-coordinator/kube-coordinator.py.j2 dest=/srv/kube-coordinator/kube-coordinator.py backup=no force=yes
   become: true
   
 - name: Copy /etc/init/kube-coordinator.conf

@@ -20,6 +20,10 @@
 
 - hosts: master_node_host
   tasks:
+  - include: roles/node/tasks/hosts_uninstall.yml
+
+- hosts: master_node_host
+  tasks:
   - include: roles/node/tasks/kubernetes_node_uninstall.yml
 
 - hosts: master_node_host

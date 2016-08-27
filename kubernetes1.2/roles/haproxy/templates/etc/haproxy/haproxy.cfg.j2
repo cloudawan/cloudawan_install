@@ -27,15 +27,15 @@ listen cloudone_gui :443
     option tcplog
     balance roundrobin
 {% for ip in groups['master_node_host'] %}
-    server {{ hostvars[ip]['hostname'] }} {{ ip }}:30003
+    server server{{ ip }} {{ ip }}:30003
 {% endfor %}
 
-listen etcd :4001
+listen etcd :2379
     mode tcp
     option tcplog
     balance roundrobin
 {% for ip in groups['master_node_host'] %}
-    server {{ hostvars[ip]['hostname'] }} {{ ip }}:4001
+    server server{{ ip }} {{ ip }}:2379
 {% endfor %}
 		
 listen kubeapi :6443
@@ -43,7 +43,7 @@ listen kubeapi :6443
     option tcplog
     balance roundrobin
 {% for ip in groups['master_node_host'] %}
-    server {{ hostvars[ip]['hostname'] }} {{ ip }}:6443
+    server server{{ ip }} {{ ip }}:6443
 {% endfor %}
 		
 listen all :30000-32767
@@ -51,6 +51,6 @@ listen all :30000-32767
     option tcplog
     balance roundrobin
 {% for ip in groups['master_node_host'] %}
-    server {{ hostvars[ip]['hostname'] }} {{ ip }}
+    server server{{ ip }} {{ ip }}
 {% endfor %}
 	

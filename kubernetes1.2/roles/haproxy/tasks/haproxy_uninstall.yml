@@ -13,7 +13,11 @@
 - name: Uninstall keepalived
   apt: name=keepalived state=absent purge=yes
   become: true
-  
+
+- name: Delete keepalived repository
+  apt_repository: repo='deb http://ppa.launchpad.net/keepalived/stable/ubuntu trusty main' filename=keepalived state=absent
+  become: true
+
 - name: Uninstall haproxy
   apt: name=haproxy state=absent purge=yes
   become: true

@@ -1,0 +1,1 @@
+KUBE_CONTROLLER_MANAGER_OPTS=" --master=https://{{ inventory_hostname }}:6443 --kubeconfig=/srv/kubeconfig/kubeconfig.yaml --root-ca-file=/srv/kubernetes/ca.crt --service-account-private-key-file=/srv/kubernetes/server.key --logtostderr=true --pod_eviction_timeout=10s"

@@ -1,0 +1,30 @@
+import time
+import json
+from httplib2 import Http
+
+
+endpoind = "https://{{ master_host_slb_vip }}:6443"
+
+
+h = Http(timeout=10, disable_ssl_certificate_validation=True)
+h.add_certificate(key="/srv/kubernetes/server.key", cert="/srv/kubernetes/server.cert",domain="")
+
+
+result=False
+for i in xrange(0, 4):
+	time.sleep(10*i)
+	try:
+		head, body = h.request(endpoind + "/api/v1/nodes/{{ inventory_hostname }}", "DELETE")
+		if head.status != 200:
+			print head
+			print body
+		else:
+			result=True
+			break
+	except Exception as e:
+		print e
+		
+if result is False:
+	raise Exception("Fail to delete")
+
+print "Done"

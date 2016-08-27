@@ -24,4 +24,4 @@ certificate_server_valid_days=36500
 # Install infrastructure
 # The hostname here should be the same as IP unless there is the DNS server which could translate the hostname to IP for other machines.
 [master_node_host]
-192.168.0.76 hostname=192.168.0.76 ansible_user=username ansible_ssh_pass=password ansible_become_pass=password
+192.168.0.76 ansible_user=username ansible_ssh_pass=password ansible_become_pass=password

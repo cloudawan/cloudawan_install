@@ -1,0 +1,5 @@
+# Modify /etc/hosts
+
+- name: Modify /etc/hosts
+  lineinfile: dest=/etc/hosts line="{{ inventory_hostname }} private-registry" state=absent
+  become: true

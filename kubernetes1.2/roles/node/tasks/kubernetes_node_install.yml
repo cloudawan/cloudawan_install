@@ -16,14 +16,6 @@
   template: src=roles/node/templates/etc/default/kubelet.j2 dest=/etc/default/kubelet backup=no force=yes
   become: true
 
-- name: Creates directory /srv/kubelet
-  file: path=/srv/kubelet state=directory
-  become: true
-
-- name: Create /srv/kubelet/config.yaml
-  template: src=roles/node/templates/srv/kubelet/config.yaml.j2 dest=/srv/kubelet/config.yaml backup=no force=yes
-  become: true
-
 - name: Run kubelet
   service: name=kubelet state=started
   become: true

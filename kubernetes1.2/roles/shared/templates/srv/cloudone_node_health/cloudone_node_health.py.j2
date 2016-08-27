@@ -34,8 +34,9 @@ class CloudOneNodeHealth:
 		# ISO 8601 format: YYYY-MM-DDTHH:MM:SS.mmmmmm+HH:MM
 		self.time_format = "%Y-%m-%dT%H:%M:%S.%f%z"
 		self.ip = self.__get_ip_address("eth0")
-		self.etcd_host_and_port = "http://{{ master_host_ip }}:4001"
-		self.h = Http(timeout=10)
+		self.etcd_host_and_port = "https://{{ master_host_ip }}:2379"
+		self.h = Http(timeout=10, disable_ssl_certificate_validation=True)
+		self.h.add_certificate(key="/srv/kubernetes/server.key", cert="/srv/kubernetes/server.cert",domain="")
 		# HAProxy slb command file
 		self.slb_command_file_path = "/etc/haproxy/haproxy.cfg.command"
 

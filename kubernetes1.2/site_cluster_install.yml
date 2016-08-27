@@ -12,29 +12,6 @@
   tasks:
   - include: roles/shared/tasks/common_install.yml
 
-# Master
-
-- hosts: master_node_host
-  tasks:
-  - include: roles/master/tasks/hosts.yml
-
-- hosts: master_node_host
-  tasks:
-  - include: roles/master/tasks/etcd_install.yml
-
-- hosts: master_node_host
-  tasks:
-  - include: roles/master/tasks/flannel_preconfigure.yml
-    run_once: true
-
-- hosts: master_node_host
-  vars:
-    line_start_on: "start on started etcd"
-    line_stop_on: "stop on stopping etcd"
-    master_host_ip: 127.0.0.1
-  tasks:
-  - include: roles/shared/tasks/flannel_install.yml
-
 - hosts: master_node_host
   vars:
     certificate_ca_required: False
@@ -49,9 +26,36 @@
 
 - hosts: master_node_host
   tasks:
+  - include: roles/shared/tasks/kubeconfig_install.yml
+
+# Master
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/master/tasks/etcd_install.yml
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/master/tasks/flannel_preconfigure.yml
+    run_once: true
+
+- hosts: master_node_host
+  vars:
+    line_start_on: "start on started etcd"
+    line_stop_on: "stop on stopping etcd"
+    master_host_ip: "{{ inventory_hostname }}"
+  tasks:
+  - include: roles/shared/tasks/flannel_install.yml
+
+- hosts: master_node_host
+  tasks:
   - include: roles/master/tasks/kubernetes_master_install.yml
 
 # Node
+
+- hosts: master_node_host
+  tasks:
+  - include: roles/node/tasks/hosts_install.yml
 
 - hosts: master_node_host
   tasks:

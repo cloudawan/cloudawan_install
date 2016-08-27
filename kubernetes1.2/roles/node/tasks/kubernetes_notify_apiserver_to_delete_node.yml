@@ -1,8 +1,15 @@
-# Delete Node
+# Create temporarily templates
 
-- name: notify Kubernetes to delete Node host from the list
-  uri:
-    url: http://{{ master_host_slb_vip }}:8080/api/v1/nodes/{{ inventory_hostname }}
-    method: DELETE
-    status_code: 200
+- name: Create kubernetes notify apiserver to delete node script
+  template: src=roles/node/templates/kubernetes_notify_apiserver_to_delete_node.py.j2 dest=/tmp/kubernetes_notify_apiserver_to_delete_node.py backup=no force=yes
+
+# Run templates
+
+- name: Run kubernetes notify apiserver to delete node script
+  command: /usr/bin/python /tmp/kubernetes_notify_apiserver_to_delete_node.py
   ignore_errors: yes
+
+# Delete temporarily templates
+
+- name: Delete kubernetes_notify_apiserver_to_delete_node.py
+  file: path=/tmp/kubernetes_notify_apiserver_to_delete_node.py state=absent

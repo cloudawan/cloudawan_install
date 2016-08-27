@@ -14,9 +14,10 @@ class NodeStatus:
 	def __init__(self):
 		self.maximum_check_amount = 15 * 60 # Check each second
 		self.start = True
-		self.etcd_url = "http://127.0.0.1:4001/v2/keys/cloudawan/cloudone/health"
-		self.kubeapi_url = "http://127.0.0.1:8080/api/v1/nodes"
-		self.h = Http()
+		self.etcd_url = "https://{{ inventory_hostname }}:2379/v2/keys/cloudawan/cloudone/health"
+		self.kubeapi_url = "https://{{ inventory_hostname }}:6443/api/v1/nodes"
+		self.h = Http(timeout=10, disable_ssl_certificate_validation=True)
+		self.h.add_certificate(key="/srv/kubernetes/server.key", cert="/srv/kubernetes/server.cert", domain="")
 		
 	# This is used to make sure all services are up and all nodes are ready before start scheduler and controller-manager. Otherwise, the pods are not assigned to those nodes which are under initialization.
 	def should_wait_for_all_services_up_and_all_nodes_ready_after_start(self):
@@ -160,9 +161,10 @@ class KubeCoordinator:
 		self.check_interval = 1
 		self.timeout = 10
 		self.waitting_after_accquired = 10
-		self.etcd_url = "http://127.0.0.1:4001/v2/keys/cloudawan/master"
+		self.etcd_url = "https://{{ inventory_hostname }}:2379/v2/keys/cloudawan/master"
 		self.ip = self.__get_ip_address("eth0")
-		self.h = Http()
+		self.h = Http(timeout=10, disable_ssl_certificate_validation=True)
+		self.h.add_certificate(key="/srv/kubernetes/server.key", cert="/srv/kubernetes/server.cert", domain="")
 		self.time_format = "%Y-%m-%dT%H:%M:%S.%f"
 		self.node_status = NodeStatus()
 

@@ -1,1 +1,1 @@
-FLANNEL_OPTS="--etcd-endpoints=http://{{ master_host_ip }}:4001"
+FLANNEL_OPTS=" -etcd-endpoints=https://{{ master_host_ip }}:2379 -etcd-cafile=/srv/kubernetes/ca.crt -etcd-certfile=/srv/kubernetes/server.cert -etcd-keyfile=/srv/kubernetes/server.key"
