@@ -22,9 +22,10 @@
   tasks:
   - include: roles/master/tasks/etcd_install.yml
 
-- hosts: master_node_configuring
+- hosts: master_node_host
   tasks:
   - include: roles/master/tasks/flannel_preconfigure.yml
+    run_once: true
 
 - hosts: master_node_host
   vars:
@@ -34,17 +35,16 @@
   tasks:
   - include: roles/shared/tasks/flannel_install.yml
 
-- hosts: master_node_configuring
+- hosts: master_node_host
+  vars:
+    certificate_ca_required: False
   tasks:
-  - include: roles/master/tasks/kubernetes_certificate_generate.yml
+  - include: roles/shared/tasks/kubernetes_certificate_generate.yml
+    run_once: true
   
 - hosts: master_node_host
   tasks:
-  - include: roles/master/tasks/kubernetes_certificate_copy.yml
-
-- hosts: master_node_configuring
-  tasks:
-  - include: roles/master/tasks/kubernetes_certificate_delete_generated_source.yml
+  - include: roles/shared/tasks/kubernetes_certificate_copy.yml
 
 - hosts: master_node_host
   tasks:
@@ -78,29 +78,33 @@
 
 # Service/Application on the Kubernetes
 
-- hosts: master_node_configuring
+- hosts: master_node_host
   tasks:
   - include: roles/master/tasks/kube_dns.yml
+    run_once: true
 
-- hosts: master_node_configuring
+- hosts: master_node_host
   tasks:
   - include: roles/master/tasks/glusterfs_default_endpoint.yml
+    run_once: true
 
 - hosts: master_node_host
   tasks:
   - include: roles/node/tasks/private_registry_certificate.yml
 
-- hosts: master_node_configuring
+- hosts: master_node_host
   tasks:
   - include: roles/master/tasks/private_registry_create.yml
+    run_once: true
 
 - hosts: master_node_host
   tasks:
   - include: roles/node/tasks/cloudone_image_retrieve.yml
 
-- hosts: master_node_configuring
+- hosts: master_node_host
   tasks:
   - include: roles/master/tasks/cloudone_create.yml
+    run_once: true
 
 - hosts: master_node_host
   tasks:
@@ -108,21 +112,25 @@
 
 # Configure on cloudone
 
-- hosts: master_node_configuring
+- hosts: master_node_host
   tasks:
   - include: roles/master/tasks/cloudone_glusterfs_cluster_configure.yml
+    run_once: true
 
-- hosts: master_node_configuring
+- hosts: master_node_host
   tasks:
   - include: roles/master/tasks/cloudone_private_registry_configure.yml
+    run_once: true
 
-- hosts: master_node_configuring
+- hosts: master_node_host
   tasks:
   - include: roles/master/tasks/cloudone_host_credential_configure.yml
+    run_once: true
 
-- hosts: master_node_configuring
+- hosts: master_node_host
   tasks:
   - include: roles/master/tasks/cloudone_third_party_service_template_import.yml
+    run_once: true
 
 # HAproxy
 
@@ -134,9 +142,10 @@
   tasks:
   - include: roles/haproxy/tasks/cloudone_slb_install.yml
 
-- hosts: master_node_configuring
+- hosts: master_node_host
   tasks:
   - include: roles/master/tasks/cloudone_slb_daemon_configure.yml
+    run_once: true
 
 # Cloudone node health
 # The role is incrementally added

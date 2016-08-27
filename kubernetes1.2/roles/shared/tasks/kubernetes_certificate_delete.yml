@@ -4,14 +4,6 @@
   file: path=/srv/kubernetes/ca.crt  state=absent
   become: true
   
-- name: Delete /srv/kubernetes/kubecfg.crt
-  file: path=/srv/kubernetes/kubecfg.crt state=absent
-  become: true
-
-- name: Delete /srv/kubernetes/kubecfg.key
-  file: path=/srv/kubernetes/kubecfg.key state=absent
-  become: true
-  
 - name: Delete /srv/kubernetes/server.cert
   file: path=/srv/kubernetes/server.cert state=absent
   become: true

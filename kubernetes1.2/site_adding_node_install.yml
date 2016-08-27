@@ -24,6 +24,17 @@
   tasks:
   - include: roles/node/tasks/kubernetes_node_install.yml
 
+- hosts: master_node_host
+  vars:
+    certificate_ca_required: True
+  tasks:
+  - include: roles/shared/tasks/kubernetes_certificate_generate.yml
+    run_once: true
+  
+- hosts: master_node_host
+  tasks:
+  - include: roles/shared/tasks/kubernetes_certificate_copy.yml
+
 # Configure hostname of private-registry
 
 - hosts: master_node_host

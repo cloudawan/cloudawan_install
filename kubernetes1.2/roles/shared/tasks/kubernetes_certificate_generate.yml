@@ -1,0 +1,19 @@
+# Create certificate directory
+
+- name: Creates directory roles/shared/files/script/kubernetes_certificate/
+  file: path=roles/shared/files/script/kubernetes_certificate/ state=directory
+  delegate_to: 127.0.0.1
+
+# Generate certificates
+
+- name: Create generate certificate script
+  template: src=roles/shared/templates/script/generate_certificate.py.j2 dest=roles/shared/files/script/kubernetes_certificate/generate_certificate.py backup=no force=yes
+  delegate_to: 127.0.0.1
+
+- name: Run generate certificate script
+  command: /usr/bin/python generate_certificate.py chdir=roles/shared/files/script/kubernetes_certificate/
+  delegate_to: 127.0.0.1
+
+- name: Delete roles/shared/files/script/kubernetes_certificate/generate_certificate.py
+  file: path=roles/shared/files/script/kubernetes_certificate/generate_certificate.py state=absent
+  delegate_to: 127.0.0.1

@@ -1,0 +1,19 @@
+# Create certificate directory
+
+- name: Creates directory /srv/kubernetes for certificate
+  file: path=/srv/kubernetes state=directory
+  become: true
+  
+# Copy certificates
+
+- name: Copy /srv/kubernetes/ca.cert
+  copy: src=roles/shared/files/script/kubernetes_certificate/ca.cert dest=/srv/kubernetes/ca.crt 
+  become: true
+  
+- name: Copy /srv/kubernetes/server.cert
+  copy: src=roles/shared/files/script/kubernetes_certificate/server{{ inventory_hostname }}.cert dest=/srv/kubernetes/server.cert
+  become: true
+
+- name: Copy /srv/kubernetes/server.key
+  copy: src=roles/shared/files/script/kubernetes_certificate/server{{ inventory_hostname }}.key dest=/srv/kubernetes/server.key
+  become: true

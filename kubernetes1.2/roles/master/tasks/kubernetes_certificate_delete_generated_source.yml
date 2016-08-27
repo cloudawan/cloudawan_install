@@ -1,5 +1,0 @@
-# Delete generated certificates on the source machine
-
-- name: Delete recurrisively /tmp/srv/kubernetes
-  file: path=/tmp/srv/kubernetes state=absent
-  delegate_to: 127.0.0.1

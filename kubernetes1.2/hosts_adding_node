@@ -10,6 +10,14 @@ service_cluster_dns_ip=172.17.3.10
 node_label="region=region1,zone=zone2"
 # This is the virtual IP in front of all master hosts.
 master_host_slb_vip=192.168.0.150
+# Generate certificates for Kubernetes components to use bi-directional SSL to secure the communication.
+# The CA certificates should the pair used during the initial cluster install.
+# The file path could be relative or absolute. If not indicated, it will try to pick up the pair generated during the initial cluster install.
+certificate_ca_certificate_file_path=""
+certificate_ca_key_file_path=""
+certificate_ca_key_passphrase="password"
+certificate_ca_valid_days=36500
+certificate_server_valid_days=36500
 # The token to access secured kube-apiserver port 6443
 # This should be the same as the one installed in the initial cluster
 kube_apiserver_access_token="9pIoafGAbaKxdbwuHWZNJqHYS56S0vmh"
