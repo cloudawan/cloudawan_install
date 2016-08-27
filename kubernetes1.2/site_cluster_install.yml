@@ -38,6 +38,7 @@
 - hosts: master_node_host
   vars:
     certificate_ca_required: False
+    master_host_ip: "{{ hostvars[groups['haproxy'][0]]['haproxy_floating_ip'] }}"
   tasks:
   - include: roles/shared/tasks/kubernetes_certificate_generate.yml
     run_once: true
@@ -58,7 +59,7 @@
 
 - hosts: master_node_host
   vars:
-    master_host_ip: 127.0.0.1
+    master_host_ip: "{{ inventory_hostname }}"
   tasks:
   - include: roles/node/tasks/kubernetes_node_install.yml
 
@@ -72,9 +73,10 @@
   tasks:
   - include: roles/glusterfs/tasks/glusterfs_join.yml
   
-- hosts: glusterfs_configuring
+- hosts: glusterfs_host
   tasks:
   - include: roles/glusterfs/tasks/glusterfs_create_volume.yml
+    run_once: true
 
 # Service/Application on the Kubernetes
 

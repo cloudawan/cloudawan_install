@@ -16,14 +16,6 @@
   template: src=roles/master/templates/etc/default/kube-apiserver.j2 dest=/etc/default/kube-apiserver backup=no force=yes
   become: true
 
-- name: Creates directory /srv/kube-apiserver
-  file: path=/srv/kube-apiserver state=directory
-  become: true
-
-- name: Create /srv/kube-apiserver/known_tokens.csv
-  template: src=roles/master/templates/srv/kube-apiserver/known_tokens.csv.j2 dest=/srv/kube-apiserver/known_tokens.csv backup=no force=yes
-  become: true
-
 - name: Run kube-apiserver
   service: name=kube-apiserver state=started
   become: true

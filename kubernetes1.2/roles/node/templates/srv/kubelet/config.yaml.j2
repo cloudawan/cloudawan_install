@@ -1,8 +1,7 @@
 apiVersion: v1
 clusters:
 - cluster:
-    insecure-skip-tls-verify: true
-    server: https://{{ master_host_ip }}:6443
+    certificate-authority: "/srv/kubernetes/ca.crt"
   name: initial_cluster
 contexts:
 - context:
@@ -15,4 +14,5 @@ preferences: {}
 users:
 - name: kubelet
   user:
-    token: {{ kube_apiserver_access_token }}
+    client-certificate: "/srv/kubernetes/server.cert"
+    client-key: "/srv/kubernetes/server.key"

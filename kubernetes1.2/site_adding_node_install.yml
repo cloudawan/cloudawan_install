@@ -20,13 +20,8 @@
 
 - hosts: master_node_host
   vars:
-    master_host_ip: "{{ master_host_slb_vip }}"
-  tasks:
-  - include: roles/node/tasks/kubernetes_node_install.yml
-
-- hosts: master_node_host
-  vars:
     certificate_ca_required: True
+    master_host_ip: "{{ master_host_slb_vip }}"
   tasks:
   - include: roles/shared/tasks/kubernetes_certificate_generate.yml
     run_once: true
@@ -34,6 +29,12 @@
 - hosts: master_node_host
   tasks:
   - include: roles/shared/tasks/kubernetes_certificate_copy.yml
+
+- hosts: master_node_host
+  vars:
+    master_host_ip: "{{ master_host_slb_vip }}"
+  tasks:
+  - include: roles/node/tasks/kubernetes_node_install.yml
 
 # Configure hostname of private-registry
 

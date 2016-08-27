@@ -16,6 +16,7 @@ class CertificateGeneration:
 			{% endfor %}
 		]
 		self.service_cluster_ip_range = "{{ service_cluster_ip_range }}"
+		self.master_host_ip = "{{ master_host_ip }}"
 		self.openssl_index_file_path = "index"
 		self.openssl_serial_file_path = "serial"
 		self.openssl_configuration_file_path = "openssl.cnf"
@@ -376,16 +377,19 @@ class CertificateGeneration:
 			raise Exception("Fail to get service cluster gateway from " + str(self.service_cluster_ip_range))
 
 	def __generate_ca_pair_if_not_existing(self):
-		if os.path.isfile(self.ca_certificate_file_path) and os.path.isfile(self.ca_key_file_path):
-			os.system("cp " + self.ca_certificate_file_path + " ca.cert")
-			os.system("cp " + self.ca_key_file_path + " ca.key")
+		if os.path.isfile("ca.cert") is True or os.path.isfile("ca.key") is True:
+			# Already generated or copied
+			pass
 		else:
-			if self.ca_required:
-				if os.path.isfile("ca.cert") is False or os.path.isfile("ca.key") is False:
+			if os.path.isfile(self.ca_certificate_file_path) and os.path.isfile(self.ca_key_file_path):
+				os.system("cp " + self.ca_certificate_file_path + " ca.cert")
+				os.system("cp " + self.ca_key_file_path + " ca.key")
+			else:
+				if self.ca_required:
 					raise Exception("The original CA used during the initial cluster install is required to sign the generated server certificates.")
-
-			os.system("openssl genrsa -aes256 -out ca.key -passout pass:" + self.ca_key_passphrase + " 4096")
-			os.system("openssl req -key ca.key -new -x509 -days " + self.ca_valid_days + " -sha256 -extensions v3_ca -out ca.cert -passin pass:" + self.ca_key_passphrase + " -subj \"/C=US/ST=CA/L=Fremont/O=CloudAwan/OU=Development/CN=kuberentes_cluster_ca\"")
+				else:
+					os.system("openssl genrsa -aes256 -out ca.key -passout pass:" + self.ca_key_passphrase + " 4096")
+					os.system("openssl req -key ca.key -new -x509 -days " + self.ca_valid_days + " -sha256 -extensions v3_ca -out ca.cert -passin pass:" + self.ca_key_passphrase + " -subj \"/C=US/ST=CA/L=Fremont/O=CloudAwan/OU=Development/CN=kuberentes_cluster_ca\"")
 
 	def __generate_index_if_not_existing(self):
 		if os.path.isfile(self.openssl_index_file_path):
@@ -409,60 +413,70 @@ class CertificateGeneration:
 				file_write.write(self.openssl_configuration_file_content)
 			os.system("mkdir certs")
 	
+	def __get_server_ip_list(self):
+		index = 3
+		text = "\n"
+		for server in self.server_list:
+			text += "			IP." + str(index) + " = " + server + "\n"
+			index += 1
+		return text
+	
 	def generate_certificate(self):
 		self.__generate_ca_pair_if_not_existing()
 		self.__generate_index_if_not_existing()
 		self.__generate_serial_if_not_existing()
 		self.__generate_configuration_if_not_existing()
-	
-		for ip in self.server_list:
-			request_configuration = \
-			"""
-			[req]
-			distinguished_name = req_distinguished_name
-			req_extensions = v3_req
 
-			[ req_distinguished_name ]
-			countryName                     = Country Name (2 letter code)
-			countryName_default             = US
-			countryName_min                 = 2
-			countryName_max                 = 2
-			stateOrProvinceName             = State or Province Name (full name)
-			stateOrProvinceName_default     = CA
-			localityName                    = Locality Name (eg, city)
-			localityName_default            = Fremont
-			0.organizationName              = Organization Name (eg, company)
-			0.organizationName_default      = CloudAwan
-			organizationalUnitName          = Organizational Unit Name (eg, section)
-			organizationalUnitName_default  = RD
-			commonName                      = Common Name (e.g. server FQDN or YOUR name)
-			commonName_max                  = 64
-			emailAddress                    = Email Address
-			emailAddress_max                = 64
-
-			[ v3_req ]
-			basicConstraints = CA:FALSE
-			keyUsage = nonRepudiation, digitalSignature, keyEncipherment
-			subjectAltName = @alt_names
-
-			[ alt_names ]
-			IP.1 = """ + ip + """
-			IP.2 = """ + self.__get_service_cluster_gateway() + """
-			DNS.1 = kubernetes
-			DNS.2 = kubernetes.default
-			DNS.3 = kubernetes.default.svc
-			DNS.4 = kubernetes.default.svc.cluster.local
-			"""
-			with open("openssl" + ip + ".cnf", "w") as file_write:
-				file_write.write(request_configuration)
+		# Each host can't have its own certificate because when requesting services from within Kubernetes, the destination may be any one host the host and the token issued by one host could not be used by the other hosts.
+		request_configuration = \
+		"""
+		[req]
+		distinguished_name = req_distinguished_name
+		req_extensions = v3_req
 		
-			os.system("openssl req -new -nodes -config openssl" + ip + ".cnf -newkey rsa:2048 -keyout server" + ip + ".key -out server" + ip + ".csr -days " + self.server_valid_days + " -subj \"/C=US/ST=CA/L=Fremont/O=CloudAwan/OU=Development/CN=kuberentes_server_" + ip + "\"")
-			os.system("openssl ca -batch -days " + self.server_valid_days + " -cert ca.cert -keyfile ca.key -key " + self.ca_key_passphrase + " -out server" + ip + ".cert -in server" + ip + ".csr -config " + self.openssl_configuration_file_path)
-			os.system("rm server" + ip + ".csr")
-			os.system("rm openssl" + ip + ".cnf")
+		[ req_distinguished_name ]
+		countryName                     = Country Name (2 letter code)
+		countryName_default             = US
+		countryName_min                 = 2
+		countryName_max                 = 2
+		stateOrProvinceName             = State or Province Name (full name)
+		stateOrProvinceName_default     = CA
+		localityName                    = Locality Name (eg, city)
+		localityName_default            = Fremont
+		0.organizationName              = Organization Name (eg, company)
+		0.organizationName_default      = CloudAwan
+		organizationalUnitName          = Organizational Unit Name (eg, section)
+		organizationalUnitName_default  = RD
+		commonName                      = Common Name (e.g. server FQDN or YOUR name)
+		commonName_max                  = 64
+		emailAddress                    = Email Address
+		emailAddress_max                = 64
+
+		[ v3_req ]
+		basicConstraints = CA:FALSE
+		keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+		subjectAltName = @alt_names
+
+		[ alt_names ]
+		IP.1 = """ + self.__get_service_cluster_gateway() + """
+		IP.2 = """ + self.master_host_ip + """
+		""" + self.__get_server_ip_list() + """
+		DNS.1 = kubernetes
+		DNS.2 = kubernetes.default
+		DNS.3 = kubernetes.default.svc
+		DNS.4 = kubernetes.default.svc.cluster.local
+		"""
+		
+		with open("openssl_request.cnf", "w") as file_write:
+			file_write.write(request_configuration)
+		
+		os.system("openssl req -new -nodes -config openssl_request.cnf -newkey rsa:2048 -keyout server.key -out server.csr -days " + self.server_valid_days + " -subj \"/C=US/ST=CA/L=Fremont/O=CloudAwan/OU=Development/CN=kuberentes_server\"")
+		os.system("openssl ca -batch -days " + self.server_valid_days + " -cert ca.cert -keyfile ca.key -key " + self.ca_key_passphrase + " -out server.cert -in server.csr -config " + self.openssl_configuration_file_path)
+		os.system("rm server.csr")
+		os.system("rm openssl_request.cnf")
 
 		os.system("rm -rf certs")
-		os.system("rm index.attr.old")
+		#os.system("rm index.attr.old")
 		os.system("rm index.attr")
 		os.system("rm index.old")
 		os.system("rm index")

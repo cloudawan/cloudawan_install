@@ -20,7 +20,7 @@
   
 - hosts: master_node_host
   tasks:
-  - include: roles/master/tasks/kubernetes_certificate_delete.yml
+  - include: roles/shared/tasks/kubernetes_certificate_delete.yml
 
 - hosts: master_node_host
   tasks:

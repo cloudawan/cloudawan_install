@@ -40,10 +40,6 @@
   file: path=/etc/default/kube-apiserver state=absent
   become: true
 
-- name: Delete directory /srv/kube-apiserver recursively
-  file: path=/srv/kube-apiserver state=absent
-  become: true
-
 # Uninstall kube-controller-manager
 
 - name: Stop kube-controller-manager
