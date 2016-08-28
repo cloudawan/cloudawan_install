@@ -16,7 +16,7 @@ body_dictionary = {
 	
 result=False
 for i in xrange(0, 4):
-	time.sleep(10*i)
+	time.sleep(20*i)
 	try:
 		head, body = h.request("https://" + host_and_port + "/api/v1/authorizations/tokens", "POST", json.dumps(body_dictionary), headers={"Content-Type": "application/json"})
 		if head.status != 200:
@@ -49,7 +49,7 @@ body_dictionary = {
 
 result=False
 for i in xrange(0, 4):
-	time.sleep(10*i)
+	time.sleep(20*i)
 	try:
 		head, body = h.request("https://" + host_and_port + "/api/v1/glusterfs/clusters", "POST", json.dumps(body_dictionary), headers={"Content-Type": "application/json", "token": token})
 		if head.status != 200:
