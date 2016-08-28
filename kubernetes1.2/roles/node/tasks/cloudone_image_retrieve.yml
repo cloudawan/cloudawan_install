@@ -1,7 +1,7 @@
 # Module requirement
 
 - name: Install docker-py
-  pip: name=docker-py
+  pip: name=docker-py version=1.9.0
   become: yes
 
 # Retrieve
