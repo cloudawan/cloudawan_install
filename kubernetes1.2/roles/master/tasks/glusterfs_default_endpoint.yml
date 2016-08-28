@@ -10,9 +10,17 @@
 
 - name: Create glusterfs-service.json
   command: /usr/local/bin/kubectl create -f /tmp/glusterfs-service.json
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
 
 - name: Create glusterfs-endpoints.yaml
   command: /usr/local/bin/kubectl create -f /tmp/glusterfs-endpoints.yaml
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
 
 # Delete temporarily templates
 

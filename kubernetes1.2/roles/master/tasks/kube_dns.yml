@@ -10,12 +10,24 @@
 
 - name: Create namespace kube-system
   command: /usr/local/bin/kubectl create namespace kube-system
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
 
 - name: Create skydns-rc
   command: /usr/local/bin/kubectl create -f /tmp/skydns-rc.yaml
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
 
 - name: Create skydns-svc
   command: /usr/local/bin/kubectl create -f /tmp/skydns-svc.yaml
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
 
 # Delete temporarily templates
 

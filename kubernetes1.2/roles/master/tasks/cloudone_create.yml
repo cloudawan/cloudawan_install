@@ -16,15 +16,31 @@
 
 - name: Create etcd-service.json
   command: /usr/local/bin/kubectl create -f /tmp/etcd-service.json
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
   
 - name: Create etcd-endpoints.yaml
   command: /usr/local/bin/kubectl create -f /tmp/etcd-endpoints.yaml
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
 
 - name: Create cloudone-controller-glusterfs.json
   command: /usr/local/bin/kubectl create -f /tmp/cloudone-controller-glusterfs.json
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
 
 - name: Create cloudone-service.json
   command: /usr/local/bin/kubectl create -f /tmp/cloudone-service.json
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
   
 # Delete temporarily templates
 

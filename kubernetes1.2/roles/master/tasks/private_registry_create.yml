@@ -10,9 +10,17 @@
 
 - name: Create private-registry-controller-wth-glusterfs.json
   command: /usr/local/bin/kubectl create -f /tmp/private-registry-controller-with-glusterfs.json
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
   
 - name: Create private-registry-service.json
   command: /usr/local/bin/kubectl create -f /tmp/private-registry-service.json
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
 
 # Delete temporarily templates
 
