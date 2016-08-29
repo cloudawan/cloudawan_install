@@ -41,3 +41,21 @@
   until: result|success
   retries: 3
   delay: 5
+
+- name: Retrieve cloudawan/spark_master
+  docker_image:
+    name: cloudawan/spark_master
+  become: yes
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
+
+- name: Retrieve cloudawan/spark_worker
+  docker_image:
+    name: cloudawan/spark_worker
+  become: yes
+  register: result
+  until: result|success
+  retries: 3
+  delay: 5
