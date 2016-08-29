@@ -33,16 +33,24 @@ if result is False:
 	
 token = json.loads(body).get("Token")
 
-def import_template(name, description, replication_controller_file_name, service_file_name, environment_file_name, script_file_name):
+def import_template(name, description, replication_controller_file_name, service_file_name, environment_file_name=None, script_file_name=None):
 	with open(replication_controller_file_name, "r") as file_read:
 		replication_controller = file_read.read()
 	with open(service_file_name, "r") as file_read:
 		service = file_read.read()
-	with open(environment_file_name, "r") as file_read:
-		environment = file_read.read()
-		environment = json.loads(environment)
-	with open(script_file_name, "r") as file_read:
-		script = file_read.read()
+	if environment_file_name is not None:
+		with open(environment_file_name, "r") as file_read:
+			environment = file_read.read()
+			environment = json.loads(environment)
+	else:
+		environment={}
+	if script_file_name is not None:
+		with open(script_file_name, "r") as file_read:
+			script = file_read.read()
+			script_type = "python"
+	else:
+		script = ""
+		script_type = "python"
 	
 	body_dictionary = {
 		"Name": name,
@@ -50,7 +58,7 @@ def import_template(name, description, replication_controller_file_name, service
 		"ReplicationControllerJson": replication_controller,
 		"ServiceJson": service,
 		"Environment": environment,
-		"ScriptType": "python",
+		"ScriptType": script_type,
 		"ScriptContent": script
 	}
 
@@ -120,5 +128,20 @@ import_template(
 	"/tmp/third_party_service_template/rabbitmq/template/environment.json",
 	"/tmp/third_party_service_template/rabbitmq/template/cluster.py")
 
+import_template(
+	"spark-master", 
+	"spark-master. Size: 1",
+	"/tmp/third_party_service_template/spark/template/master/replication-controller.json",
+	"/tmp/third_party_service_template/spark/template/master/service.json",
+	None,
+	None)
+
+import_template(
+	"spark-worker", 
+	"spark-worker cluster. Size: 1, 2, 3, or ...",
+	"/tmp/third_party_service_template/spark/template/worker/replication-controller.json",
+	"/tmp/third_party_service_template/spark/template/worker/service.json",
+	"/tmp/third_party_service_template/spark/template/worker/environment.json",
+	None)
 	
 print "Done"
